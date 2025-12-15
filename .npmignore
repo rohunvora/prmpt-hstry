@@ -1,0 +1,19 @@
+# Test files
+test/
+*.test.js
+coverage/
+
+# Development files
+.git/
+.gitignore
+.DS_Store
+
+# Documentation (keep README)
+QUICKSTART.md
+EXAMPLE.md
+
+# Temporary files
+tmp/
+*.tmp
+.prmpt-hstry.json
+prmpt-hstry-export.*
