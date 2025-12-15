@@ -1,0 +1,24 @@
+{
+  "name": "prmpt-hstry",
+  "version": "1.0.0",
+  "description": "Easy way to share entire prompt history, tied to a finished product so people can learn",
+  "main": "index.js",
+  "bin": {
+    "prmpt-hstry": "./cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "prompt",
+    "history",
+    "ai",
+    "learning",
+    "sharing"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^11.1.0"
+  }
+}
