@@ -1,33 +1,69 @@
 # prompt.gallery
 
-A curated collection of prompts that actually work. Think [reallygoodemails.com](https://reallygoodemails.com) but for AI prompts.
+**A curated collection of AI prompts that actually work.** Browse proven prompts across coding, writing, analysis, and creative categories with one-click copy functionality. Think [reallygoodemails.com](https://reallygoodemails.com) but for AI prompts - no fluff, just prompts that deliver results tied to real finished products so you can learn what actually works.
 
-## Features
+## What it does
 
-- **One-click copy** — Click anywhere on a prompt card to copy it instantly
-- **Filter by category** — Coding, Writing, Analysis, Creative, System prompts
-- **Keyboard shortcuts** — `Cmd/Ctrl + 1-9` to copy the nth visible prompt
-- **Beautiful dark UI** — Editorial aesthetic with monospace prompts
+- **One-click copy** — Click any prompt card to instantly copy it to your clipboard
+- **Smart filtering** — Browse by category: Coding, Writing, Analysis, Creative, System prompts
+- **Keyboard shortcuts** — `Cmd/Ctrl + 1-9` to quickly copy the nth visible prompt
+- **Clean interface** — Dark UI optimized for daily AI users, with monospace formatting for prompts
+- **No BS** — Every prompt is tied to actual results, not theoretical examples
 
-## Running locally
+## Quick Start
+
+The gallery runs as a static site - no installation needed:
 
 ```bash
-# Simple Python server
+# Clone and serve locally
+git clone https://github.com/yourusername/prmpt-hstry.git
+cd prmpt-hstry
 python3 -m http.server 8080
 
-# Then open http://localhost:8080
+# Open http://localhost:8080
 ```
 
-## Stack
+Or just visit the live version at [prompt.gallery](https://prompt.gallery) (if deployed).
 
-- Pure HTML/CSS/JS — no build step, no dependencies
-- IBM Plex Mono for prompts
-- Instrument Sans for UI
+## Usage
 
-## Adding prompts
+1. **Browse prompts** by category or scroll through all
+2. **Click any card** to copy the prompt instantly  
+3. **Use keyboard shortcuts** `Cmd/Ctrl + 1-9` for rapid copying
+4. **Filter by clicking** category tags to focus on specific types
 
-Edit `index.html` and add a new `<article class="prompt-card">` following the existing pattern. Categories: `coding`, `writing`, `analysis`, `creative`, `system`.
+## Adding Your Own Prompts
 
----
+Edit `index.html` and add a new prompt card:
 
-Built for people who use AI daily.
+```html
+<article class="prompt-card" data-category="coding">
+  <div class="prompt-content">
+    <p>Your prompt text here...</p>
+  </div>
+  <div class="prompt-meta">
+    <span class="category">coding</span>
+    <span class="description">Brief description of what this does</span>
+  </div>
+</article>
+```
+
+Available categories: `coding`, `writing`, `analysis`, `creative`, `system`
+
+## Tech Stack
+
+- **Pure HTML/CSS/JS** — No build step, no dependencies, just works
+- **IBM Plex Mono** for prompt text (optimal readability)
+- **Instrument Sans** for UI elements
+- **Static hosting ready** — Deploy anywhere
+
+## Why This Exists
+
+Most prompt collections are either theoretical examples or buried in long blog posts. This gallery focuses on prompts that are:
+
+- **Battle-tested** — Used in real projects with real results
+- **Immediately usable** — Copy and paste, no modification needed  
+- **Properly categorized** — Find what you need quickly
+- **Accessible** — Works offline, loads fast, no tracking
+
+Built for people who use AI tools daily and need reliable prompts that actually work.
