@@ -52,25 +52,25 @@ export default function PromptsPage() {
         {/* Hero Section */}
         <section className="pt-16 pb-12 px-6 md:pt-20 md:pb-16">
           <div className="max-w-2xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-[var(--text-primary)] mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-text-primary mb-6">
               Prompts that actually work
             </h1>
-            <p className="text-lg text-[var(--text-secondary)] mb-12">
+            <p className="text-lg text-text-secondary mb-12">
               Curated collection of battle-tested prompts. Click to copy, paste to use.
             </p>
             
             {/* Search Bar */}
-            <div className="relative max-w-md mx-auto" style={{ marginBottom: '80px' }}>
+            <div className="relative max-w-md mx-auto mb-20">
               <Search 
                 size={20} 
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" 
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" 
               />
               <input
                 type="text"
                 placeholder="Search prompts..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[var(--accent-primary)] transition-colors"
+                className="w-full pl-12 pr-4 py-4 bg-bg-card border border-border-subtle rounded-2xl text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent-primary transition-colors"
               />
             </div>
           </div>
@@ -84,8 +84,8 @@ export default function PromptsPage() {
               onClick={() => setActiveFilter(cat.value)}
               className={`text-sm font-medium px-4 py-2 rounded-full border transition-all duration-150 ${
                 activeFilter === cat.value
-                  ? 'bg-[var(--text-primary)] text-[var(--bg-card)] border-[var(--text-primary)]'
-                  : 'bg-[var(--bg-card)] text-[var(--text-secondary)] border-[var(--border-subtle)] hover:border-[var(--border-medium)] hover:text-[var(--text-primary)]'
+                  ? 'bg-text-primary text-bg-card border-text-primary'
+                  : 'bg-bg-card text-text-secondary border-border-subtle hover:border-border-medium hover:text-text-primary'
               }`}
             >
               {cat.label}
@@ -96,17 +96,14 @@ export default function PromptsPage() {
         {/* Results count */}
         {searchQuery && (
           <div className="text-center pb-6">
-            <span className="text-sm text-[var(--text-muted)]">
+            <span className="text-sm text-text-muted">
               {filteredPrompts.length} {filteredPrompts.length === 1 ? 'result' : 'results'} found
             </span>
           </div>
         )}
 
         {/* Gallery Grid */}
-        <div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto"
-          style={{ gap: '48px', padding: '0 64px 128px 64px' }}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 px-8 md:px-16 pb-32 max-w-7xl mx-auto">
           {filteredPrompts.map((prompt, index) => (
             <div 
               key={prompt.id}
@@ -127,10 +124,10 @@ export default function PromptsPage() {
         {/* Empty state */}
         {filteredPrompts.length === 0 && (
           <div className="text-center py-16">
-            <p className="text-[var(--text-muted)]">No prompts found matching your search.</p>
+            <p className="text-text-muted">No prompts found matching your search.</p>
             <button 
               onClick={() => { setSearchQuery(''); setActiveFilter('all'); }}
-              className="mt-4 text-[var(--accent-primary)] hover:text-[var(--accent-secondary)] transition-colors"
+              className="mt-4 text-accent-primary hover:text-accent-secondary transition-colors"
             >
               Clear filters
             </button>
@@ -142,13 +139,13 @@ export default function PromptsPage() {
 
       {/* Toast */}
       <div 
-        className={`fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 px-5 py-3.5 bg-[var(--bg-card)] border border-[var(--success)] rounded-[var(--radius-md)] text-sm font-medium shadow-lg transition-all duration-250 z-[1001] ${
+        className={`fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 px-5 py-3.5 bg-bg-card border border-success rounded-xl text-sm font-medium shadow-lg transition-all duration-250 z-[1001] ${
           copiedToast 
             ? 'translate-y-0 opacity-100 visible' 
             : 'translate-y-[100px] opacity-0 invisible'
         }`}
       >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4.5 h-4.5 text-[var(--success)]">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4.5 h-4.5 text-success">
           <polyline points="20 6 9 17 4 12" />
         </svg>
         Copied to clipboard

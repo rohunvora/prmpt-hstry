@@ -40,7 +40,7 @@ export default function ShowcaseDetailPage() {
         <Header />
         <main className="max-w-4xl mx-auto px-8 py-16 text-center">
           <h1 className="text-2xl font-bold mb-4">Showcase not found</h1>
-          <Link href="/showcases" className="text-[var(--accent-primary)]">
+          <Link href="/showcases" className="text-accent-primary">
             ← Back to showcases
           </Link>
         </main>
@@ -78,7 +78,7 @@ export default function ShowcaseDetailPage() {
         {/* Back button */}
         <Link 
           href="/showcases" 
-          className="inline-flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] mb-8 no-underline"
+          className="inline-flex items-center gap-2 text-sm text-text-muted hover:text-text-primary mb-8 no-underline"
         >
           <ArrowLeft size={16} />
           Back to showcases
@@ -87,37 +87,37 @@ export default function ShowcaseDetailPage() {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <span className="font-mono text-[0.65rem] font-medium uppercase tracking-wide px-2 py-1 bg-[var(--accent-glow)] text-[var(--accent-primary)] rounded-[var(--radius-sm)]">
+            <span className="font-mono text-[0.65rem] font-medium uppercase tracking-wide px-2 py-1 bg-accent-light text-accent-primary rounded-lg">
               {showcase.category}
             </span>
             {isPurchased && (
-              <span className="font-mono text-[0.65rem] font-medium uppercase tracking-wide px-2 py-1 bg-[var(--success-glow)] text-[var(--success)] rounded-[var(--radius-sm)]">
+              <span className="font-mono text-[0.65rem] font-medium uppercase tracking-wide px-2 py-1 bg-success-light text-success rounded-lg">
                 ✓ Purchased
               </span>
             )}
           </div>
           
           <h1 className="text-3xl font-bold tracking-tight mb-3">{showcase.title}</h1>
-          <p className="text-lg text-[var(--text-secondary)] leading-relaxed">{showcase.description}</p>
+          <p className="text-lg text-text-secondary leading-relaxed">{showcase.description}</p>
         </div>
 
         {/* Stats & Creator */}
-        <div className="flex flex-wrap items-center gap-6 p-4 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] mb-8">
+        <div className="flex flex-wrap items-center gap-6 p-4 bg-bg-card border border-border-subtle rounded-2xl mb-8">
           <div className="flex items-center gap-2">
-            <MessageSquare size={18} className="text-[var(--text-muted)]" />
+            <MessageSquare size={18} className="text-text-muted" />
             <span className="font-semibold">{showcase.stats.prompts}</span>
-            <span className="text-sm text-[var(--text-muted)]">prompts</span>
+            <span className="text-sm text-text-muted">prompts</span>
           </div>
           <div className="flex items-center gap-2">
-            <CheckCircle size={18} className="text-[var(--text-muted)]" />
+            <CheckCircle size={18} className="text-text-muted" />
             <span className="font-semibold">{showcase.stats.iterations}</span>
-            <span className="text-sm text-[var(--text-muted)]">iterations</span>
+            <span className="text-sm text-text-muted">iterations</span>
           </div>
           {showcase.stats.hours && (
             <div className="flex items-center gap-2">
-              <Clock size={18} className="text-[var(--text-muted)]" />
+              <Clock size={18} className="text-text-muted" />
               <span className="font-semibold">{showcase.stats.hours}</span>
-              <span className="text-sm text-[var(--text-muted)]">hours</span>
+              <span className="text-sm text-text-muted">hours</span>
             </div>
           )}
           
@@ -126,14 +126,13 @@ export default function ShowcaseDetailPage() {
           {showcase.creator && (
             <div className="flex items-center gap-3">
               <div 
-                className="w-10 h-10 rounded-full flex items-center justify-center font-semibold"
-                style={{ background: 'linear-gradient(135deg, var(--accent-primary), #f59e0b)' }}
+                className="w-10 h-10 rounded-full flex items-center justify-center font-semibold bg-gradient-to-br from-accent-primary to-warning text-white"
               >
                 {showcase.creator.display_name?.[0] || 'A'}
               </div>
               <div>
                 <div className="font-medium">{showcase.creator.display_name || 'Anonymous'}</div>
-                <div className="text-xs text-[var(--text-muted)]">Creator</div>
+                <div className="text-xs text-text-muted">Creator</div>
               </div>
             </div>
           )}
@@ -159,29 +158,29 @@ export default function ShowcaseDetailPage() {
             {visibleMessages.map((msg, index) => (
               <div 
                 key={index}
-                className={`p-4 rounded-[var(--radius-md)] ${
+                className={`p-4 rounded-xl ${
                   msg.role === 'user'
-                    ? 'bg-[var(--bg-primary)] border border-[var(--border-subtle)] border-l-[3px] border-l-[var(--accent-primary)]'
-                    : 'bg-[var(--bg-secondary)] border border-[var(--border-subtle)]'
+                    ? 'bg-bg-primary border border-border-subtle border-l-[3px] border-l-accent-primary'
+                    : 'bg-bg-secondary border border-border-subtle'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
                   <span className={`font-mono text-[0.65rem] font-semibold uppercase tracking-wide ${
-                    msg.role === 'user' ? 'text-[var(--accent-primary)]' : 'text-[var(--text-muted)]'
+                    msg.role === 'user' ? 'text-accent-primary' : 'text-text-muted'
                   }`}>
                     {msg.role === 'user' ? 'You' : 'AI'}
                   </span>
                   {isPurchased && (
                     <button
                       onClick={() => copyMessage(msg.content, index)}
-                      className="p-1.5 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+                      className="p-1.5 text-text-muted hover:text-text-primary transition-colors"
                       title="Copy message"
                     >
                       {copiedIndex === index ? <Check size={14} /> : <Copy size={14} />}
                     </button>
                   )}
                 </div>
-                <div className="text-sm text-[var(--text-secondary)] leading-relaxed whitespace-pre-wrap">
+                <div className="text-sm text-text-secondary leading-relaxed whitespace-pre-wrap">
                   {msg.content}
                 </div>
               </div>
@@ -190,14 +189,14 @@ export default function ShowcaseDetailPage() {
 
           {/* Locked Content */}
           {!isPurchased && (
-            <div className="relative mt-4 p-8 rounded-[var(--radius-md)] bg-gradient-to-b from-transparent to-[var(--bg-primary)] text-center">
-              <div className="flex items-center justify-center gap-2 text-[var(--text-muted)] mb-4">
+            <div className="relative mt-4 p-8 rounded-xl bg-gradient-to-b from-transparent to-bg-primary text-center">
+              <div className="flex items-center justify-center gap-2 text-text-muted mb-4">
                 <Lock size={20} />
                 <span>{showcase.stats.prompts - showcase.preview_messages.length} more messages locked</span>
               </div>
               <button
                 onClick={() => setShowCheckout(true)}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--accent-primary)] rounded-[var(--radius-md)] text-base font-semibold text-black hover:bg-[var(--accent-secondary)] transition-all"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-accent-primary rounded-xl text-base font-semibold text-black hover:bg-accent-secondary transition-all"
               >
                 <Lock size={18} />
                 Unlock for ${priceFormatted}
@@ -208,12 +207,12 @@ export default function ShowcaseDetailPage() {
 
         {/* Actions for purchased */}
         {isPurchased && (
-          <div className="flex gap-4 p-4 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)]">
-            <button className="flex-1 flex items-center justify-center gap-2 py-3 bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-[var(--radius-md)] text-sm font-medium text-[var(--text-secondary)] hover:border-[var(--border-medium)] hover:text-[var(--text-primary)] transition-all">
+          <div className="flex gap-4 p-4 bg-bg-card border border-border-subtle rounded-2xl">
+            <button className="flex-1 flex items-center justify-center gap-2 py-3 bg-bg-primary border border-border-subtle rounded-xl text-sm font-medium text-text-secondary hover:border-border-medium hover:text-text-primary transition-all">
               <Download size={18} />
               Download JSON
             </button>
-            <button className="flex-1 flex items-center justify-center gap-2 py-3 bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-[var(--radius-md)] text-sm font-medium text-[var(--text-secondary)] hover:border-[var(--border-medium)] hover:text-[var(--text-primary)] transition-all">
+            <button className="flex-1 flex items-center justify-center gap-2 py-3 bg-bg-primary border border-border-subtle rounded-xl text-sm font-medium text-text-secondary hover:border-border-medium hover:text-text-primary transition-all">
               <Copy size={18} />
               Copy All
             </button>
@@ -228,47 +227,47 @@ export default function ShowcaseDetailPage() {
           onClick={() => setShowCheckout(false)}
         >
           <div 
-            className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] max-w-md w-full p-6"
+            className="bg-bg-card border border-border-subtle rounded-2xl max-w-md w-full p-6"
             onClick={e => e.stopPropagation()}
           >
             <h2 className="text-xl font-bold mb-2">Unlock Full Showcase</h2>
-            <p className="text-sm text-[var(--text-secondary)] mb-6">
+            <p className="text-sm text-text-secondary mb-6">
               Get access to all {showcase.stats.prompts} prompts and AI responses.
             </p>
             
-            <div className="p-4 bg-[var(--bg-primary)] rounded-[var(--radius-md)] mb-6">
+            <div className="p-4 bg-bg-primary rounded-xl mb-6">
               <div className="text-3xl font-bold text-center mb-1">${priceFormatted}</div>
-              <div className="text-sm text-[var(--text-muted)] text-center">One-time purchase</div>
+              <div className="text-sm text-text-muted text-center">One-time purchase</div>
             </div>
 
-            <ul className="space-y-2 mb-6 text-sm text-[var(--text-secondary)]">
+            <ul className="space-y-2 mb-6 text-sm text-text-secondary">
               <li className="flex items-center gap-2">
-                <CheckCircle size={16} className="text-[var(--success)]" />
+                <CheckCircle size={16} className="text-success" />
                 Full conversation history
               </li>
               <li className="flex items-center gap-2">
-                <CheckCircle size={16} className="text-[var(--success)]" />
+                <CheckCircle size={16} className="text-success" />
                 Download as JSON
               </li>
               <li className="flex items-center gap-2">
-                <CheckCircle size={16} className="text-[var(--success)]" />
+                <CheckCircle size={16} className="text-success" />
                 Copy individual messages
               </li>
               <li className="flex items-center gap-2">
-                <CheckCircle size={16} className="text-[var(--success)]" />
+                <CheckCircle size={16} className="text-success" />
                 Lifetime access
               </li>
             </ul>
 
             <button
               onClick={handlePurchase}
-              className="w-full flex items-center justify-center gap-2 py-3 bg-[var(--accent-primary)] rounded-[var(--radius-md)] text-base font-semibold text-black hover:bg-[var(--accent-secondary)] transition-all"
+              className="w-full flex items-center justify-center gap-2 py-3 bg-accent-primary rounded-xl text-base font-semibold text-black hover:bg-accent-secondary transition-all"
             >
               <CreditCard size={18} />
               Purchase with Stripe
             </button>
             
-            <p className="text-xs text-[var(--text-muted)] text-center mt-4">
+            <p className="text-xs text-text-muted text-center mt-4">
               Secure payment powered by Stripe
             </p>
           </div>
@@ -308,4 +307,3 @@ function generateMockMessages(count: number): Message[] {
   }
   return messages.slice(0, count)
 }
-

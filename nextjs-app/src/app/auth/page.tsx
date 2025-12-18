@@ -102,34 +102,34 @@ export default function AuthPage() {
           <h1 className="text-3xl font-bold mb-2">
             {isLogin ? 'Welcome back' : 'Create your account'}
           </h1>
-          <p className="text-[var(--text-secondary)]">
+          <p className="text-text-secondary">
             {isLogin 
               ? 'Sign in to access your dashboard' 
               : 'Start monetizing your prompt histories'}
           </p>
         </div>
 
-        <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] p-6">
+        <div className="bg-bg-card border border-border-subtle rounded-2xl p-6">
           {/* GitHub Auth */}
           <button
             onClick={handleGitHubAuth}
             disabled={loading}
-            className="w-full flex items-center justify-center gap-3 py-3 bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-[var(--radius-md)] text-base font-medium hover:border-[var(--border-medium)] transition-all disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-3 py-3 bg-bg-primary border border-border-subtle rounded-xl text-base font-medium hover:border-border-medium transition-all disabled:opacity-50"
           >
             <Github size={20} />
             Continue with GitHub
           </button>
 
           <div className="flex items-center gap-4 my-6">
-            <div className="flex-1 h-px bg-[var(--border-subtle)]" />
-            <span className="text-sm text-[var(--text-muted)]">or</span>
-            <div className="flex-1 h-px bg-[var(--border-subtle)]" />
+            <div className="flex-1 h-px bg-border-subtle" />
+            <span className="text-sm text-text-muted">or</span>
+            <div className="flex-1 h-px bg-border-subtle" />
           </div>
 
           {/* Email/Password Form */}
           <form onSubmit={handleEmailAuth} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">
+              <label className="block text-sm font-medium text-text-secondary mb-1.5">
                 Email
               </label>
               <input
@@ -138,12 +138,12 @@ export default function AuthPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full px-4 py-3 bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-[var(--radius-md)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[var(--accent-primary)]"
+                className="w-full px-4 py-3 bg-bg-primary border border-border-subtle rounded-xl text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent-primary"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">
+              <label className="block text-sm font-medium text-text-secondary mb-1.5">
                 Password
               </label>
               <input
@@ -153,18 +153,18 @@ export default function AuthPage() {
                 placeholder="••••••••"
                 required
                 minLength={6}
-                className="w-full px-4 py-3 bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-[var(--radius-md)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[var(--accent-primary)]"
+                className="w-full px-4 py-3 bg-bg-primary border border-border-subtle rounded-xl text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent-primary"
               />
             </div>
 
             {error && (
-              <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-[var(--radius-md)] text-sm text-red-400">
+              <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-sm text-red-400">
                 {error}
               </div>
             )}
 
             {message && (
-              <div className="p-3 bg-[var(--success-glow)] border border-[var(--success)]/20 rounded-[var(--radius-md)] text-sm text-[var(--success)]">
+              <div className="p-3 bg-success-light border border-success/20 rounded-xl text-sm text-success">
                 {message}
               </div>
             )}
@@ -172,7 +172,7 @@ export default function AuthPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3 bg-[var(--accent-primary)] rounded-[var(--radius-md)] text-base font-semibold text-black hover:bg-[var(--accent-secondary)] transition-all disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 py-3 bg-accent-primary rounded-xl text-base font-semibold text-black hover:bg-accent-secondary transition-all disabled:opacity-50"
             >
               {loading && <Loader2 size={18} className="animate-spin" />}
               {isLogin ? 'Sign In' : 'Create Account'}
@@ -183,20 +183,20 @@ export default function AuthPage() {
           <button
             onClick={handleMagicLink}
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2 py-3 mt-3 text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+            className="w-full flex items-center justify-center gap-2 py-3 mt-3 text-sm text-text-muted hover:text-text-primary transition-colors"
           >
             <Mail size={16} />
             Send magic link instead
           </button>
 
           {/* Toggle */}
-          <div className="mt-6 pt-6 border-t border-[var(--border-subtle)] text-center text-sm text-[var(--text-secondary)]">
+          <div className="mt-6 pt-6 border-t border-border-subtle text-center text-sm text-text-secondary">
             {isLogin ? (
               <>
                 Don&apos;t have an account?{' '}
                 <button 
                   onClick={() => setIsLogin(false)}
-                  className="text-[var(--accent-primary)] hover:text-[var(--accent-secondary)]"
+                  className="text-accent-primary hover:text-accent-secondary"
                 >
                   Sign up
                 </button>
@@ -206,7 +206,7 @@ export default function AuthPage() {
                 Already have an account?{' '}
                 <button 
                   onClick={() => setIsLogin(true)}
-                  className="text-[var(--accent-primary)] hover:text-[var(--accent-secondary)]"
+                  className="text-accent-primary hover:text-accent-secondary"
                 >
                   Sign in
                 </button>
@@ -220,4 +220,3 @@ export default function AuthPage() {
     </>
   )
 }
-

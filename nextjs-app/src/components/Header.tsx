@@ -29,12 +29,12 @@ export function Header() {
   const isActive = (path: string) => pathname === path
 
   return (
-    <header className="bg-[var(--bg-card)] border-b border-[var(--border-subtle)] sticky top-0 z-50">
+    <header className="bg-bg-card border-b border-border-subtle sticky top-0 z-50">
       <nav className="flex items-center justify-between max-w-6xl mx-auto px-6 py-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 no-underline">
-          <span className="text-2xl text-[var(--accent-primary)]">⌘</span>
-          <span className="text-xl font-semibold tracking-tight text-[var(--text-primary)]">
+          <span className="text-2xl text-accent-primary">⌘</span>
+          <span className="text-xl font-semibold tracking-tight text-text-primary">
             prompt.gallery
           </span>
         </Link>
@@ -43,10 +43,10 @@ export function Header() {
         <div className="flex items-center gap-1">
           <Link 
             href="/" 
-            className={`text-sm font-medium px-3 py-2 rounded-[var(--radius-md)] transition-colors no-underline ${
+            className={`text-sm font-medium px-3 py-2 rounded-xl transition-colors no-underline ${
               isActive('/') 
-                ? 'text-[var(--accent-primary)] bg-[var(--accent-light)]' 
-                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]'
+                ? 'text-accent-primary bg-accent-light' 
+                : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
             }`}
           >
             Prompts
@@ -54,10 +54,10 @@ export function Header() {
           
           <Link 
             href="/showcases" 
-            className={`text-sm font-medium px-3 py-2 rounded-[var(--radius-md)] transition-colors no-underline ${
+            className={`text-sm font-medium px-3 py-2 rounded-xl transition-colors no-underline ${
               pathname.startsWith('/showcase') 
-                ? 'text-[var(--accent-primary)] bg-[var(--accent-light)]' 
-                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]'
+                ? 'text-accent-primary bg-accent-light' 
+                : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
             }`}
           >
             Showcases
@@ -65,14 +65,14 @@ export function Header() {
           
           <Link 
             href="/export" 
-            className={`text-sm font-medium px-3 py-2 rounded-[var(--radius-md)] flex items-center gap-2 transition-colors no-underline ${
+            className={`text-sm font-medium px-3 py-2 rounded-xl flex items-center gap-2 transition-colors no-underline ${
               isActive('/export') 
-                ? 'text-[var(--accent-primary)] bg-[var(--accent-light)]' 
-                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]'
+                ? 'text-accent-primary bg-accent-light' 
+                : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
             }`}
           >
             Export
-            <span className="font-mono text-[0.6rem] font-semibold tracking-wide px-1.5 py-0.5 rounded bg-[var(--accent-primary)] text-white">
+            <span className="font-mono text-[0.6rem] font-semibold tracking-wide px-1.5 py-0.5 rounded bg-accent-primary text-white">
               NEW
             </span>
           </Link>
@@ -80,10 +80,10 @@ export function Header() {
           {user ? (
             <Link 
               href="/dashboard" 
-              className={`text-sm font-medium px-3 py-2 rounded-[var(--radius-md)] transition-colors no-underline ${
+              className={`text-sm font-medium px-3 py-2 rounded-xl transition-colors no-underline ${
                 isActive('/dashboard') 
-                  ? 'text-[var(--accent-primary)] bg-[var(--accent-light)]' 
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]'
+                  ? 'text-accent-primary bg-accent-light' 
+                  : 'text-text-secondary hover:text-text-primary hover:bg-bg-secondary'
               }`}
             >
               Dashboard
@@ -91,7 +91,7 @@ export function Header() {
           ) : (
             <Link 
               href="/auth" 
-              className="text-sm font-medium px-4 py-2 bg-[var(--accent-primary)] text-white rounded-[var(--radius-md)] hover:bg-[var(--accent-secondary)] transition-colors no-underline ml-2"
+              className="text-sm font-medium px-4 py-2 bg-accent-primary text-white rounded-xl hover:bg-accent-secondary transition-colors no-underline ml-2"
             >
               Sign In
             </Link>
@@ -101,7 +101,7 @@ export function Header() {
             href="https://github.com/rohunvora/prmpt-hstry" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors ml-2 p-2"
+            className="text-text-muted hover:text-text-primary transition-colors ml-2 p-2"
             aria-label="View on GitHub"
           >
             <Github size={20} />
