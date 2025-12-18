@@ -1,3 +1,15 @@
+/**
+ * ShowcaseCard Component
+ * 
+ * Displays a paid showcase item with preview, stats, creator info, and purchase CTAs.
+ * Used on the /showcases page and homepage.
+ * 
+ * DATA SOURCE: Showcase data comes from Supabase (see lib/types.ts for schema)
+ * PAYMENTS: Stripe integration in /api/checkout handles purchases
+ * 
+ * STYLING: Same Tailwind v4 caveats as PromptCard - see globals.css for notes.
+ */
+
 'use client'
 
 import Link from 'next/link'

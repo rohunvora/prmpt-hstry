@@ -1,40 +1,82 @@
+/**
+ * GLOBAL STYLES - prompt.gallery
+ * 
+ * ⚠️  IMPORTANT FOR REDESIGN:
+ * This file uses Tailwind CSS v4 with CSS custom properties.
+ * 
+ * RECOMMENDED APPROACH for new styling:
+ * 1. Define colors in the @theme block (Tailwind v4's way)
+ * 2. Use standard Tailwind classes: bg-bg-card, text-text-primary, etc.
+ * 3. AVOID arbitrary value syntax like bg-[var(--color)] - it's inconsistent in v4
+ * 
+ * ALTERNATIVE: If you prefer, you can downgrade to Tailwind v3 which has
+ * more stable arbitrary value support. Just change package.json.
+ */
+
 @import "tailwindcss";
 
-/* === CSS Variables (from original styles.css) === */
+/* =============================================================================
+   CSS CUSTOM PROPERTIES
+   These define the design tokens. Update these to change the color scheme.
+   ============================================================================= */
+
 :root {
+  /* Backgrounds */
   --bg-primary: #0a0a0b;
   --bg-secondary: #111113;
   --bg-card: #161618;
   --bg-card-hover: #1a1a1d;
+  
+  /* Borders */
   --border-subtle: #232326;
   --border-medium: #2a2a2e;
   
+  /* Text */
   --text-primary: #f4f4f5;
   --text-secondary: #a1a1aa;
   --text-muted: #71717a;
   
+  /* Accent (Orange) */
   --accent-primary: #f97316;
   --accent-secondary: #fb923c;
   --accent-glow: rgba(249, 115, 22, 0.15);
   
+  /* Success (Green) */
   --success: #22c55e;
   --success-glow: rgba(34, 197, 94, 0.2);
   
+  /* Spacing & Radius */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
   
+  /* Transitions */
   --transition-fast: 150ms ease;
   --transition-medium: 250ms ease;
 }
 
+/* =============================================================================
+   TAILWIND v4 THEME CONFIGURATION
+   
+   This exposes CSS variables to Tailwind so you can use them as utilities.
+   Example: bg-bg-card, text-text-primary, border-border-subtle
+   
+   The --color-* prefix is required by Tailwind v4.
+   ============================================================================= */
+
 @theme inline {
+  /* System colors */
   --color-background: var(--bg-primary);
   --color-foreground: var(--text-primary);
+  
+  /* Fonts - loaded via Google Fonts in layout.tsx */
   --font-sans: 'Instrument Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'IBM Plex Mono', 'SF Mono', Consolas, monospace;
   
-  /* Custom colors for Tailwind utilities */
+  /* 
+   * Custom colors - use these with Tailwind utilities
+   * bg-bg-card, text-text-primary, border-border-subtle, etc.
+   */
   --color-bg-primary: #0a0a0b;
   --color-bg-secondary: #111113;
   --color-bg-card: #161618;
@@ -50,13 +92,16 @@
   --color-success: #22c55e;
   --color-success-glow: rgba(34, 197, 94, 0.2);
   
-  /* Border radius */
+  /* Border radius tokens */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
 }
 
-/* === Reset & Base === */
+/* =============================================================================
+   BASE STYLES & RESETS
+   ============================================================================= */
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -77,7 +122,11 @@ body {
   min-height: 100vh;
 }
 
-/* === Noise Texture Overlay === */
+/* =============================================================================
+   VISUAL EFFECTS
+   ============================================================================= */
+
+/* Noise texture overlay - adds subtle grain */
 .noise {
   position: fixed;
   top: 0;
@@ -90,13 +139,16 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 }
 
-/* === Selection === */
+/* Text selection */
 ::selection {
   background: var(--accent-primary);
   color: var(--bg-primary);
 }
 
-/* === Scrollbar === */
+/* =============================================================================
+   SCROLLBAR STYLING (Webkit browsers)
+   ============================================================================= */
+
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -114,7 +166,10 @@ body {
   background: var(--text-muted);
 }
 
-/* === Animations === */
+/* =============================================================================
+   ANIMATIONS
+   ============================================================================= */
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -131,16 +186,14 @@ body {
   50% { box-shadow: 0 0 30px var(--accent-glow), 0 0 40px var(--accent-glow); }
 }
 
-@keyframes badge-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
 .animate-fadeIn {
   animation: fadeIn 0.4s ease forwards;
 }
 
-/* === Form Elements === */
+/* =============================================================================
+   FORM ELEMENTS
+   ============================================================================= */
+
 input, select, textarea {
   font-family: inherit;
 }
@@ -150,7 +203,10 @@ button {
   cursor: pointer;
 }
 
-/* === Links === */
+/* =============================================================================
+   LINKS
+   ============================================================================= */
+
 a {
   color: var(--accent-primary);
   text-decoration: none;
@@ -161,33 +217,43 @@ a:hover {
   color: var(--accent-secondary);
 }
 
-/* === Explicit utility classes for card styling === */
-/* These override Tailwind's arbitrary value compilation issues */
-.bg-\[var\(--bg-card\)\] { background-color: var(--bg-card) !important; }
-.bg-\[var\(--bg-card-hover\)\] { background-color: var(--bg-card-hover) !important; }
-.bg-\[var\(--bg-primary\)\] { background-color: var(--bg-primary) !important; }
-.bg-\[var\(--bg-secondary\)\] { background-color: var(--bg-secondary) !important; }
-.bg-\[var\(--accent-glow\)\] { background-color: var(--accent-glow) !important; }
-.bg-\[var\(--success-glow\)\] { background-color: var(--success-glow) !important; }
+/* =============================================================================
+   UTILITY CLASSES FOR EXISTING COMPONENTS
+   
+   ⚠️  LEGACY SUPPORT: These exist because the current components use
+   Tailwind's arbitrary value syntax (e.g., bg-[var(--bg-card)]) which
+   doesn't compile reliably in Tailwind v4.
+   
+   FOR REDESIGN: Use the @theme colors instead:
+   - bg-bg-card instead of bg-[var(--bg-card)]
+   - text-text-primary instead of text-[var(--text-primary)]
+   - border-border-subtle instead of border-[var(--border-subtle)]
+   ============================================================================= */
 
-.border-\[var\(--border-subtle\)\] { border-color: var(--border-subtle) !important; }
-.border-\[var\(--border-medium\)\] { border-color: var(--border-medium) !important; }
-.border-\[var\(--accent-primary\)\] { border-color: var(--accent-primary) !important; }
-.border-\[var\(--success\)\] { border-color: var(--success) !important; }
+.bg-\[var\(--bg-card\)\] { background-color: var(--bg-card); }
+.bg-\[var\(--bg-card-hover\)\] { background-color: var(--bg-card-hover); }
+.bg-\[var\(--bg-primary\)\] { background-color: var(--bg-primary); }
+.bg-\[var\(--bg-secondary\)\] { background-color: var(--bg-secondary); }
+.bg-\[var\(--accent-glow\)\] { background-color: var(--accent-glow); }
+.bg-\[var\(--success-glow\)\] { background-color: var(--success-glow); }
 
-.text-\[var\(--text-primary\)\] { color: var(--text-primary) !important; }
-.text-\[var\(--text-secondary\)\] { color: var(--text-secondary) !important; }
-.text-\[var\(--text-muted\)\] { color: var(--text-muted) !important; }
-.text-\[var\(--accent-primary\)\] { color: var(--accent-primary) !important; }
-.text-\[var\(--accent-secondary\)\] { color: var(--accent-secondary) !important; }
-.text-\[var\(--success\)\] { color: var(--success) !important; }
+.border-\[var\(--border-subtle\)\] { border-color: var(--border-subtle); }
+.border-\[var\(--border-medium\)\] { border-color: var(--border-medium); }
+.border-\[var\(--accent-primary\)\] { border-color: var(--accent-primary); }
+.border-\[var\(--success\)\] { border-color: var(--success); }
 
-.rounded-\[var\(--radius-sm\)\] { border-radius: var(--radius-sm) !important; }
-.rounded-\[var\(--radius-md\)\] { border-radius: var(--radius-md) !important; }
-.rounded-\[var\(--radius-lg\)\] { border-radius: var(--radius-lg) !important; }
+.text-\[var\(--text-primary\)\] { color: var(--text-primary); }
+.text-\[var\(--text-secondary\)\] { color: var(--text-secondary); }
+.text-\[var\(--text-muted\)\] { color: var(--text-muted); }
+.text-\[var\(--accent-primary\)\] { color: var(--accent-primary); }
+.text-\[var\(--accent-secondary\)\] { color: var(--accent-secondary); }
+.text-\[var\(--success\)\] { color: var(--success); }
 
-.shadow-\[0_0_0_3px_var\(--accent-glow\)\] { box-shadow: 0 0 0 3px var(--accent-glow) !important; }
-.shadow-\[0_10px_40px_rgba\(0\,0\,0\,0\.4\)\] { box-shadow: 0 10px 40px rgba(0,0,0,0.4) !important; }
-.shadow-\[0_20px_40px_rgba\(0\,0\,0\,0\.3\)\] { box-shadow: 0 20px 40px rgba(0,0,0,0.3) !important; }
-.shadow-\[0_0_0_1px_var\(--accent-glow\)\] { box-shadow: 0 0 0 1px var(--accent-glow) !important; }
+.rounded-\[var\(--radius-sm\)\] { border-radius: var(--radius-sm); }
+.rounded-\[var\(--radius-md\)\] { border-radius: var(--radius-md); }
+.rounded-\[var\(--radius-lg\)\] { border-radius: var(--radius-lg); }
 
+.shadow-\[0_0_0_3px_var\(--accent-glow\)\] { box-shadow: 0 0 0 3px var(--accent-glow); }
+.shadow-\[0_10px_40px_rgba\(0\,0\,0\,0\.4\)\] { box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
+.shadow-\[0_20px_40px_rgba\(0\,0\,0\,0\.3\)\] { box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+.shadow-\[0_0_0_1px_var\(--accent-glow\)\] { box-shadow: 0 0 0 1px var(--accent-glow); }
