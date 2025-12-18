@@ -15,14 +15,13 @@ import {
   ArrowLeft,
   ArrowRight,
   Check,
-  Copy,
   Lock,
-  Eye,
-  EyeOff,
   Download,
   Loader2,
   CheckCircle,
-  XCircle
+  XCircle,
+  FileText,
+  Trash2
 } from 'lucide-react'
 
 type Step = 1 | 2 | 3 | 4 | 5
@@ -44,7 +43,6 @@ export default function ExportPage() {
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [uploadMessage, setUploadMessage] = useState('')
   
-  // Form data for step 5
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -66,11 +64,9 @@ export default function ExportPage() {
     { num: 5, label: 'Export', icon: Send },
   ]
 
-  // Parse different conversation formats
   const parseConversation = useCallback((text: string): Message[] => {
     const messages: Message[] = []
     
-    // Try JSON first
     try {
       const json = JSON.parse(text)
       if (Array.isArray(json)) {
@@ -90,7 +86,6 @@ export default function ExportPage() {
       // Not JSON, try plain text
     }
 
-    // Parse plain text
     const lines = text.split('\n')
     let currentRole: 'user' | 'assistant' | null = null
     let currentContent: string[] = []
@@ -234,7 +229,6 @@ export default function ExportPage() {
   const handleSubmit = async () => {
     setIsSubmitting(true)
     
-    // Check if user is authenticated
     const { data: { user } } = await supabase.auth.getUser()
     
     if (!user) {
@@ -243,7 +237,6 @@ export default function ExportPage() {
       return
     }
 
-    // Apply redactions to messages
     const selectedMessages = conversation.messages
       .filter((_, i) => conversation.selected.has(i))
       .map((msg, i) => {
@@ -256,7 +249,6 @@ export default function ExportPage() {
         return { role: msg.role, content }
       })
 
-    // In production: Upload to Supabase
     const exportData = {
       meta: {
         title: formData.title,
@@ -274,7 +266,6 @@ export default function ExportPage() {
       messages: selectedMessages
     }
 
-    // For now, download as JSON
     const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -311,399 +302,411 @@ export default function ExportPage() {
   }
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="max-w-4xl mx-auto px-8 py-8">
-        {/* Progress Bar */}
-        <div className="flex items-center justify-center mb-12">
-          {steps.map((step, i) => (
-            <div key={step.num} className="flex items-center">
-              <div className="flex flex-col items-center">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all ${
-                  currentStep === step.num
-                    ? 'bg-[var(--accent-primary)] text-black'
-                    : currentStep > step.num
-                    ? 'bg-[var(--success)] text-black'
-                    : 'bg-[var(--bg-card)] border-2 border-[var(--border-subtle)] text-[var(--text-muted)]'
-                }`}>
-                  {currentStep > step.num ? <Check size={18} /> : step.num}
+      <main className="flex-1 px-6 py-10">
+        <div className="max-w-3xl mx-auto">
+          {/* Progress Bar */}
+          <div className="flex items-center justify-center mb-12">
+            {steps.map((step, i) => (
+              <div key={step.num} className="flex items-center">
+                <div className="flex flex-col items-center">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all ${
+                    currentStep === step.num
+                      ? 'bg-[var(--accent-primary)] text-[var(--bg-primary)]'
+                      : currentStep > step.num
+                      ? 'bg-[var(--success)] text-white'
+                      : 'bg-[var(--bg-card)] border border-[var(--border-subtle)] text-[var(--text-dim)]'
+                  }`}>
+                    {currentStep > step.num ? <Check size={18} /> : step.num}
+                  </div>
+                  <span className={`text-xs mt-2 font-medium ${
+                    currentStep === step.num ? 'text-[var(--accent-primary)]' : 'text-[var(--text-dim)]'
+                  }`}>
+                    {step.label}
+                  </span>
                 </div>
-                <span className={`text-xs mt-2 ${
-                  currentStep === step.num ? 'text-[var(--accent-primary)]' : 'text-[var(--text-muted)]'
-                }`}>
-                  {step.label}
-                </span>
+                {i < steps.length - 1 && (
+                  <div className={`w-12 h-0.5 mx-3 mb-6 rounded-full ${
+                    currentStep > step.num ? 'bg-[var(--success)]' : 'bg-[var(--border-subtle)]'
+                  }`} />
+                )}
               </div>
-              {i < steps.length - 1 && (
-                <div className={`w-16 h-0.5 mx-2 mb-6 ${
-                  currentStep > step.num ? 'bg-[var(--success)]' : 'bg-[var(--border-subtle)]'
-                }`} />
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Step 1: Security */}
-        {currentStep === 1 && (
-          <div className="animate-fadeIn">
-            <div className="text-center mb-8">
-              <span className="text-5xl mb-4 block">🔒</span>
-              <h1 className="text-2xl font-bold mb-2">Your Privacy Comes First</h1>
-              <p className="text-[var(--text-secondary)]">Before we start, here&apos;s exactly what happens with your data.</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-              <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] p-6 text-center">
-                <span className="text-3xl mb-3 block">💻</span>
-                <h3 className="font-semibold mb-2">100% Client-Side</h3>
-                <p className="text-sm text-[var(--text-secondary)]">Your chat history is processed entirely in your browser.</p>
-              </div>
-              <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] p-6 text-center">
-                <span className="text-3xl mb-3 block">👁️</span>
-                <h3 className="font-semibold mb-2">Preview Before Sharing</h3>
-                <p className="text-sm text-[var(--text-secondary)]">See exactly what will be shared and redact anything.</p>
-              </div>
-              <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] p-6 text-center">
-                <span className="text-3xl mb-3 block">🗑️</span>
-                <h3 className="font-semibold mb-2">Nothing Stored</h3>
-                <p className="text-sm text-[var(--text-secondary)]">Close this tab and everything is gone.</p>
-              </div>
-            </div>
-
-            <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] p-6 mb-8">
-              <h3 className="text-sm font-medium text-[var(--text-secondary)] uppercase tracking-wide mb-3">What we access:</h3>
-              <ul className="space-y-2 mb-6">
-                <li className="flex items-center gap-3 text-sm">
-                  <CheckCircle size={18} className="text-[var(--success)]" />
-                  Your Cursor conversation history (the file you provide)
-                </li>
-                <li className="flex items-center gap-3 text-sm">
-                  <CheckCircle size={18} className="text-[var(--success)]" />
-                  Message timestamps and content
-                </li>
-              </ul>
-              
-              <h3 className="text-sm font-medium text-[var(--text-secondary)] uppercase tracking-wide mb-3">What we NEVER access:</h3>
-              <ul className="space-y-2">
-                <li className="flex items-center gap-3 text-sm">
-                  <XCircle size={18} className="text-[var(--accent-primary)]" />
-                  Your file system or other applications
-                </li>
-                <li className="flex items-center gap-3 text-sm">
-                  <XCircle size={18} className="text-[var(--accent-primary)]" />
-                  API keys, passwords, or credentials
-                </li>
-                <li className="flex items-center gap-3 text-sm">
-                  <XCircle size={18} className="text-[var(--accent-primary)]" />
-                  Anything you don&apos;t explicitly select
-                </li>
-              </ul>
-            </div>
+            ))}
           </div>
-        )}
 
-        {/* Step 2: Upload */}
-        {currentStep === 2 && (
-          <div className="animate-fadeIn">
-            <div className="text-center mb-8">
-              <span className="text-5xl mb-4 block">📁</span>
-              <h1 className="text-2xl font-bold mb-2">Upload Your Chat History</h1>
-              <p className="text-[var(--text-secondary)]">Choose how you want to provide your Cursor conversation.</p>
+          {/* Step 1: Security */}
+          {currentStep === 1 && (
+            <div className="animate-fadeIn">
+              <div className="text-center mb-10">
+                <div className="w-16 h-16 mx-auto mb-5 rounded-[var(--radius-2xl)] bg-[var(--accent-subtle)] flex items-center justify-center">
+                  <Lock size={28} className="text-[var(--accent-primary)]" />
+                </div>
+                <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Your Privacy Comes First</h1>
+                <p className="text-[var(--text-muted)]">Before we start, here&apos;s exactly what happens with your data.</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <InfoCard icon="💻" title="100% Client-Side" description="Your chat history is processed entirely in your browser." />
+                <InfoCard icon="👁️" title="Preview Before Sharing" description="See exactly what will be shared and redact anything." />
+                <InfoCard icon="🗑️" title="Nothing Stored" description="Close this tab and everything is gone." />
+              </div>
+
+              <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-xl)] p-6">
+                <h3 className="text-xs font-semibold text-[var(--text-dim)] uppercase tracking-wider mb-4">What we access:</h3>
+                <ul className="space-y-3 mb-6">
+                  <li className="flex items-center gap-3 text-sm text-[var(--text-secondary)]">
+                    <CheckCircle size={18} className="text-[var(--success)] flex-shrink-0" />
+                    Your Cursor conversation history (the file you provide)
+                  </li>
+                  <li className="flex items-center gap-3 text-sm text-[var(--text-secondary)]">
+                    <CheckCircle size={18} className="text-[var(--success)] flex-shrink-0" />
+                    Message timestamps and content
+                  </li>
+                </ul>
+                
+                <h3 className="text-xs font-semibold text-[var(--text-dim)] uppercase tracking-wider mb-4">What we NEVER access:</h3>
+                <ul className="space-y-3">
+                  <li className="flex items-center gap-3 text-sm text-[var(--text-secondary)]">
+                    <XCircle size={18} className="text-[var(--destructive)] flex-shrink-0" />
+                    Your file system or other applications
+                  </li>
+                  <li className="flex items-center gap-3 text-sm text-[var(--text-secondary)]">
+                    <XCircle size={18} className="text-[var(--destructive)] flex-shrink-0" />
+                    API keys, passwords, or credentials
+                  </li>
+                  <li className="flex items-center gap-3 text-sm text-[var(--text-secondary)]">
+                    <XCircle size={18} className="text-[var(--destructive)] flex-shrink-0" />
+                    Anything you don&apos;t explicitly select
+                  </li>
+                </ul>
+              </div>
             </div>
+          )}
 
-            {/* Upload Zone */}
-            <div 
-              onClick={() => fileInputRef.current?.click()}
-              onDragOver={(e) => { e.preventDefault(); e.currentTarget.classList.add('border-[var(--accent-primary)]') }}
-              onDragLeave={(e) => { e.currentTarget.classList.remove('border-[var(--accent-primary)]') }}
-              onDrop={(e) => {
-                e.preventDefault()
-                e.currentTarget.classList.remove('border-[var(--accent-primary)]')
-                if (e.dataTransfer.files[0]) handleFileUpload(e.dataTransfer.files[0])
-              }}
-              className="border-2 border-dashed border-[var(--border-subtle)] rounded-[var(--radius-lg)] p-12 text-center cursor-pointer bg-[var(--bg-card)] hover:border-[var(--accent-primary)] transition-colors mb-6"
-            >
-              <input 
-                ref={fileInputRef}
-                type="file" 
-                accept=".json,.txt"
-                className="hidden"
-                onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0])}
+          {/* Step 2: Upload */}
+          {currentStep === 2 && (
+            <div className="animate-fadeIn">
+              <div className="text-center mb-10">
+                <div className="w-16 h-16 mx-auto mb-5 rounded-[var(--radius-2xl)] bg-[var(--accent-subtle)] flex items-center justify-center">
+                  <FileText size={28} className="text-[var(--accent-primary)]" />
+                </div>
+                <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Upload Your Chat History</h1>
+                <p className="text-[var(--text-muted)]">Choose how you want to provide your Cursor conversation.</p>
+              </div>
+
+              {/* Upload Zone */}
+              <div 
+                onClick={() => fileInputRef.current?.click()}
+                onDragOver={(e) => { e.preventDefault(); e.currentTarget.classList.add('border-[var(--accent-primary)]', 'bg-[var(--accent-subtle)]') }}
+                onDragLeave={(e) => { e.currentTarget.classList.remove('border-[var(--accent-primary)]', 'bg-[var(--accent-subtle)]') }}
+                onDrop={(e) => {
+                  e.preventDefault()
+                  e.currentTarget.classList.remove('border-[var(--accent-primary)]', 'bg-[var(--accent-subtle)]')
+                  if (e.dataTransfer.files[0]) handleFileUpload(e.dataTransfer.files[0])
+                }}
+                className="border-2 border-dashed border-[var(--border-subtle)] rounded-[var(--radius-xl)] p-12 text-center cursor-pointer bg-[var(--bg-card)] hover:border-[var(--border-medium)] transition-all mb-6"
+              >
+                <input 
+                  ref={fileInputRef}
+                  type="file" 
+                  accept=".json,.txt"
+                  className="hidden"
+                  onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0])}
+                />
+                <Upload size={40} className="mx-auto mb-4 text-[var(--text-dim)]" />
+                <h3 className="text-base font-semibold text-[var(--text-primary)] mb-2">Drop your file here</h3>
+                <p className="text-sm text-[var(--text-dim)]">or click to browse • JSON or TXT</p>
+                {uploadStatus !== 'idle' && (
+                  <p className={`mt-4 text-sm font-medium ${uploadStatus === 'success' ? 'text-[var(--success)]' : 'text-[var(--destructive)]'}`}>
+                    {uploadMessage}
+                  </p>
+                )}
+              </div>
+
+              {/* Divider */}
+              <div className="flex items-center gap-4 my-8">
+                <div className="flex-1 h-px bg-[var(--border-subtle)]" />
+                <span className="text-sm text-[var(--text-dim)] font-medium">OR</span>
+                <div className="flex-1 h-px bg-[var(--border-subtle)]" />
+              </div>
+
+              <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">Paste your conversation</h3>
+              <textarea
+                value={pasteContent}
+                onChange={(e) => { setPasteContent(e.target.value); if (e.target.value.length > 50) handlePaste() }}
+                placeholder="USER: How do I build a rate limiter?&#10;&#10;ASSISTANT: I'll help you build a rate limiter..."
+                className="w-full h-48 p-4 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-xl)] font-mono text-sm text-[var(--text-primary)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent-primary)] resize-none transition-colors"
               />
-              <Upload size={48} className="mx-auto mb-4 text-[var(--text-muted)]" />
-              <h3 className="text-lg font-medium mb-2">Drop your file here</h3>
-              <p className="text-sm text-[var(--text-muted)]">or click to browse • JSON or TXT</p>
-              {uploadStatus !== 'idle' && (
-                <p className={`mt-4 text-sm ${uploadStatus === 'success' ? 'text-[var(--success)]' : 'text-red-400'}`}>
-                  {uploadMessage}
-                </p>
-              )}
             </div>
+          )}
 
-            {/* Paste Area */}
-            <div className="flex items-center gap-4 my-6">
-              <div className="flex-1 h-px bg-[var(--border-subtle)]" />
-              <span className="text-sm text-[var(--text-muted)]">OR</span>
-              <div className="flex-1 h-px bg-[var(--border-subtle)]" />
+          {/* Step 3: Select Messages */}
+          {currentStep === 3 && (
+            <div className="animate-fadeIn">
+              <div className="text-center mb-10">
+                <div className="w-16 h-16 mx-auto mb-5 rounded-[var(--radius-2xl)] bg-[var(--accent-subtle)] flex items-center justify-center">
+                  <MessageSquare size={28} className="text-[var(--accent-primary)]" />
+                </div>
+                <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Select Messages</h1>
+                <p className="text-[var(--text-muted)]">Choose which messages to include in your showcase.</p>
+              </div>
+
+              <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-xl)] overflow-hidden">
+                <div className="flex items-center justify-between px-5 py-4 bg-[var(--bg-secondary)] border-b border-[var(--border-subtle)]">
+                  <span className="text-sm text-[var(--text-secondary)]">
+                    <span className="text-[var(--accent-primary)] font-semibold">{conversation.selected.size}</span> of {conversation.messages.length} selected
+                  </span>
+                  <div className="flex gap-2">
+                    <button onClick={selectAll} className="px-3 py-1.5 text-xs font-medium bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-md)] hover:border-[var(--border-medium)] transition-colors">
+                      Select All
+                    </button>
+                    <button onClick={deselectAll} className="px-3 py-1.5 text-xs font-medium bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-md)] hover:border-[var(--border-medium)] transition-colors">
+                      Deselect All
+                    </button>
+                  </div>
+                </div>
+                
+                <div className="max-h-[400px] overflow-y-auto">
+                  {conversation.messages.map((msg, i) => (
+                    <div 
+                      key={i}
+                      onClick={() => toggleMessageSelection(i)}
+                      className={`flex items-start gap-3 px-5 py-4 cursor-pointer transition-colors border-b border-[var(--border-subtle)] last:border-b-0 ${
+                        conversation.selected.has(i) ? 'bg-[var(--accent-subtle)]' : 'hover:bg-[var(--bg-secondary)]'
+                      }`}
+                    >
+                      <input 
+                        type="checkbox" 
+                        checked={conversation.selected.has(i)}
+                        onChange={() => {}}
+                        className="mt-1 w-4 h-4 accent-[var(--accent-primary)] rounded"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <span className={`text-[0.625rem] font-bold uppercase tracking-wide ${
+                          msg.role === 'user' ? 'text-[var(--accent-primary)]' : 'text-[var(--text-dim)]'
+                        }`}>
+                          {msg.role}
+                        </span>
+                        <p className="text-sm text-[var(--text-secondary)] line-clamp-2 mt-1">
+                          {msg.content}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
+          )}
 
-            <h3 className="font-medium mb-3">Paste your conversation</h3>
-            <textarea
-              value={pasteContent}
-              onChange={(e) => { setPasteContent(e.target.value); if (e.target.value.length > 50) handlePaste() }}
-              placeholder="USER: How do I build a rate limiter?&#10;&#10;ASSISTANT: I'll help you build a rate limiter..."
-              className="w-full h-48 p-4 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-md)] font-mono text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[var(--accent-primary)] resize-none"
-            />
-          </div>
-        )}
+          {/* Step 4: Review & Redact */}
+          {currentStep === 4 && (
+            <div className="animate-fadeIn">
+              <div className="text-center mb-10">
+                <div className="w-16 h-16 mx-auto mb-5 rounded-[var(--radius-2xl)] bg-[var(--accent-subtle)] flex items-center justify-center">
+                  <Search size={28} className="text-[var(--accent-primary)]" />
+                </div>
+                <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Review & Redact</h1>
+                <p className="text-[var(--text-muted)]">Scan for sensitive info and redact anything you don&apos;t want shared.</p>
+              </div>
 
-        {/* Step 3: Select Messages */}
-        {currentStep === 3 && (
-          <div className="animate-fadeIn">
-            <div className="text-center mb-8">
-              <span className="text-5xl mb-4 block">💬</span>
-              <h1 className="text-2xl font-bold mb-2">Select Messages</h1>
-              <p className="text-[var(--text-secondary)]">Choose which messages to include in your showcase.</p>
-            </div>
-
-            <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] overflow-hidden">
-              <div className="flex items-center justify-between px-4 py-3 bg-[var(--bg-secondary)] border-b border-[var(--border-subtle)]">
-                <span className="text-sm text-[var(--text-secondary)]">
-                  <span className="text-[var(--accent-primary)] font-semibold">{conversation.selected.size}</span> of {conversation.messages.length} selected
-                </span>
-                <div className="flex gap-2">
-                  <button onClick={selectAll} className="px-3 py-1.5 text-xs bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded hover:border-[var(--border-medium)] transition-colors">
-                    Select All
+              <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-xl)] p-5 mb-6">
+                <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-2">🤖 Auto-detect sensitive info</h3>
+                <p className="text-sm text-[var(--text-muted)] mb-4">We&apos;ll scan for API keys, emails, and file paths.</p>
+                <div className="flex gap-3">
+                  <button onClick={autoRedact} className="flex items-center gap-2 px-4 py-2.5 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] text-sm font-medium hover:border-[var(--accent-primary)] transition-colors">
+                    <Search size={16} />
+                    Scan for Sensitive Data
                   </button>
-                  <button onClick={deselectAll} className="px-3 py-1.5 text-xs bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded hover:border-[var(--border-medium)] transition-colors">
-                    Deselect All
+                  <button onClick={clearRedactions} className="flex items-center gap-2 px-4 py-2.5 text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
+                    <Trash2 size={16} />
+                    Clear Redactions
                   </button>
                 </div>
               </div>
-              
-              <div className="max-h-[400px] overflow-y-auto">
-                {conversation.messages.map((msg, i) => (
-                  <div 
-                    key={i}
-                    onClick={() => toggleMessageSelection(i)}
-                    className={`flex items-start gap-3 px-4 py-3 cursor-pointer hover:bg-[var(--bg-secondary)] transition-colors ${
-                      conversation.selected.has(i) ? 'bg-[var(--accent-glow)]' : ''
-                    }`}
-                  >
-                    <input 
-                      type="checkbox" 
-                      checked={conversation.selected.has(i)}
-                      onChange={() => {}}
-                      className="mt-1 accent-[var(--accent-primary)]"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <span className={`text-[0.65rem] font-semibold uppercase ${
-                        msg.role === 'user' ? 'text-[var(--accent-primary)]' : 'text-[var(--text-muted)]'
-                      }`}>
-                        {msg.role}
-                      </span>
-                      <p className="text-sm text-[var(--text-secondary)] line-clamp-2">
-                        {msg.content}
-                      </p>
-                    </div>
+
+              <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-xl)] max-h-[400px] overflow-y-auto p-4">
+                {conversation.messages.filter((_, i) => conversation.selected.has(i)).map((msg, i) => (
+                  <div key={i} className={`p-4 rounded-[var(--radius-lg)] mb-3 last:mb-0 ${
+                    msg.role === 'user' 
+                      ? 'bg-[var(--accent-subtle)] border-l-2 border-[var(--accent-primary)]'
+                      : 'bg-[var(--bg-secondary)]'
+                  }`}>
+                    <span className={`text-[0.625rem] font-bold uppercase tracking-wide ${
+                      msg.role === 'user' ? 'text-[var(--accent-primary)]' : 'text-[var(--text-dim)]'
+                    }`}>
+                      {msg.role}
+                    </span>
+                    <p className="text-sm text-[var(--text-secondary)] mt-2 whitespace-pre-wrap leading-relaxed">
+                      {msg.content}
+                    </p>
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
-        )}
 
-        {/* Step 4: Review & Redact */}
-        {currentStep === 4 && (
-          <div className="animate-fadeIn">
-            <div className="text-center mb-8">
-              <span className="text-5xl mb-4 block">🔍</span>
-              <h1 className="text-2xl font-bold mb-2">Review & Redact</h1>
-              <p className="text-[var(--text-secondary)]">Scan for sensitive info and redact anything you don&apos;t want shared.</p>
-            </div>
-
-            <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] p-6 mb-6">
-              <h3 className="font-medium mb-3">🤖 Auto-detect sensitive info</h3>
-              <p className="text-sm text-[var(--text-secondary)] mb-4">We&apos;ll scan for API keys, emails, and file paths.</p>
-              <div className="flex gap-3">
-                <button onClick={autoRedact} className="flex items-center gap-2 px-4 py-2 bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-[var(--radius-md)] text-sm hover:border-[var(--accent-primary)] transition-colors">
-                  <Search size={16} />
-                  Scan for Sensitive Data
-                </button>
-                <button onClick={clearRedactions} className="px-4 py-2 text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
-                  Clear Redactions
-                </button>
+              <div className="mt-4 p-4 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] flex items-center justify-between">
+                <span className="text-sm text-[var(--text-muted)]">
+                  {Array.from(conversation.redactions.values()).reduce((sum, arr) => sum + arr.length, 0)} items redacted
+                </span>
               </div>
             </div>
+          )}
 
-            <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] max-h-[400px] overflow-y-auto p-4">
-              {conversation.messages.filter((_, i) => conversation.selected.has(i)).map((msg, i) => (
-                <div key={i} className={`p-4 rounded-[var(--radius-md)] mb-3 ${
-                  msg.role === 'user' 
-                    ? 'bg-[var(--bg-primary)] border-l-[3px] border-[var(--accent-primary)]'
-                    : 'bg-[var(--bg-secondary)]'
-                }`}>
-                  <span className={`text-[0.65rem] font-semibold uppercase ${
-                    msg.role === 'user' ? 'text-[var(--accent-primary)]' : 'text-[var(--text-muted)]'
-                  }`}>
-                    {msg.role}
-                  </span>
-                  <p className="text-sm text-[var(--text-secondary)] mt-1 whitespace-pre-wrap">
-                    {msg.content}
-                  </p>
+          {/* Step 5: Export */}
+          {currentStep === 5 && (
+            <div className="animate-fadeIn">
+              <div className="text-center mb-10">
+                <div className="w-16 h-16 mx-auto mb-5 rounded-[var(--radius-2xl)] bg-[var(--accent-subtle)] flex items-center justify-center">
+                  <Send size={28} className="text-[var(--accent-primary)]" />
                 </div>
-              ))}
-            </div>
+                <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Export Your Showcase</h1>
+                <p className="text-[var(--text-muted)]">Add details and you&apos;re ready to share!</p>
+              </div>
 
-            <div className="mt-4 p-3 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-md)] flex items-center justify-between">
-              <span className="text-sm text-[var(--text-secondary)]">
-                {Array.from(conversation.redactions.values()).reduce((sum, arr) => sum + arr.length, 0)} items redacted
-              </span>
-            </div>
-          </div>
-        )}
-
-        {/* Step 5: Export */}
-        {currentStep === 5 && (
-          <div className="animate-fadeIn">
-            <div className="text-center mb-8">
-              <span className="text-5xl mb-4 block">🚀</span>
-              <h1 className="text-2xl font-bold mb-2">Export Your Showcase</h1>
-              <p className="text-[var(--text-secondary)]">Add details and you&apos;re ready to share!</p>
-            </div>
-
-            <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] p-6 mb-6">
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1.5">Showcase Title *</label>
-                  <input
-                    type="text"
-                    value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    placeholder="e.g., Building a SaaS Dashboard from Scratch"
-                    className="w-full px-4 py-3 bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-[var(--radius-md)] focus:outline-none focus:border-[var(--accent-primary)]"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium mb-1.5">Description *</label>
-                  <textarea
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    placeholder="What did you build? What makes this conversation valuable?"
-                    rows={3}
-                    className="w-full px-4 py-3 bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-[var(--radius-md)] focus:outline-none focus:border-[var(--accent-primary)] resize-none"
-                  />
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
+              <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-xl)] p-6 mb-6">
+                <div className="space-y-5">
                   <div>
-                    <label className="block text-sm font-medium mb-1.5">Category</label>
-                    <select
-                      value={formData.category}
-                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      className="w-full px-4 py-3 bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-[var(--radius-md)] focus:outline-none focus:border-[var(--accent-primary)]"
-                    >
-                      <option value="web">Web App</option>
-                      <option value="automation">Automation</option>
-                      <option value="design">Design</option>
-                      <option value="content">Content</option>
-                    </select>
+                    <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">Showcase Title *</label>
+                    <input
+                      type="text"
+                      value={formData.title}
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      placeholder="e.g., Building a SaaS Dashboard from Scratch"
+                      className="w-full px-4 py-3 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] text-[var(--text-primary)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent-primary)] transition-colors"
+                    />
                   </div>
+                  
                   <div>
-                    <label className="block text-sm font-medium mb-1.5">Your Price</label>
-                    <div className="flex">
-                      <span className="px-4 py-3 bg-[var(--bg-secondary)] border border-r-0 border-[var(--border-subtle)] rounded-l-[var(--radius-md)] text-[var(--text-muted)]">$</span>
-                      <input
-                        type="number"
-                        value={formData.price}
-                        onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                        min="0"
-                        max="99.99"
-                        step="0.01"
-                        className="flex-1 px-4 py-3 bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-r-[var(--radius-md)] focus:outline-none focus:border-[var(--accent-primary)]"
-                      />
+                    <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">Description *</label>
+                    <textarea
+                      value={formData.description}
+                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                      placeholder="What did you build? What makes this conversation valuable?"
+                      rows={3}
+                      className="w-full px-4 py-3 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] text-[var(--text-primary)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent-primary)] resize-none transition-colors"
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">Category</label>
+                      <select
+                        value={formData.category}
+                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                        className="w-full px-4 py-3 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent-primary)] transition-colors"
+                      >
+                        <option value="web">Web App</option>
+                        <option value="automation">Automation</option>
+                        <option value="design">Design</option>
+                        <option value="content">Content</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">Your Price</label>
+                      <div className="flex">
+                        <span className="px-4 py-3 bg-[var(--bg-elevated)] border border-r-0 border-[var(--border-subtle)] rounded-l-[var(--radius-lg)] text-[var(--text-dim)]">$</span>
+                        <input
+                          type="number"
+                          value={formData.price}
+                          onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                          min="0"
+                          max="99.99"
+                          step="0.01"
+                          className="flex-1 px-4 py-3 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-r-[var(--radius-lg)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent-primary)] transition-colors"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] p-6 mb-6">
-              <h3 className="font-medium mb-4">📊 Export Summary</h3>
-              <div className="flex gap-8">
-                <div>
-                  <div className="text-2xl font-bold text-[var(--accent-primary)]">{conversation.selected.size}</div>
-                  <div className="text-sm text-[var(--text-muted)]">Messages</div>
+              <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-xl)] p-6 mb-6">
+                <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-4">📊 Export Summary</h3>
+                <div className="flex gap-8">
+                  <SummaryItem value={conversation.selected.size} label="Messages" />
+                  <SummaryItem 
+                    value={conversation.messages.filter((m, i) => conversation.selected.has(i) && m.role === 'user').length} 
+                    label="Your Prompts" 
+                  />
+                  <SummaryItem 
+                    value={Array.from(conversation.redactions.values()).reduce((sum, arr) => sum + arr.length, 0)} 
+                    label="Redacted" 
+                  />
                 </div>
-                <div>
-                  <div className="text-2xl font-bold text-[var(--accent-primary)]">
-                    {conversation.messages.filter((m, i) => conversation.selected.has(i) && m.role === 'user').length}
-                  </div>
-                  <div className="text-sm text-[var(--text-muted)]">Your Prompts</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-[var(--accent-primary)]">
-                    {Array.from(conversation.redactions.values()).reduce((sum, arr) => sum + arr.length, 0)}
-                  </div>
-                  <div className="text-sm text-[var(--text-muted)]">Redacted</div>
+              </div>
+
+              <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-xl)] p-6">
+                <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-4">Export As:</h3>
+                <div className="flex gap-4">
+                  <button
+                    onClick={handleSubmit}
+                    disabled={isSubmitting || !canProceed()}
+                    className="flex-1 flex flex-col items-center gap-2 py-6 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-[var(--radius-xl)] hover:border-[var(--border-medium)] transition-all disabled:opacity-50"
+                  >
+                    <Download size={24} className="text-[var(--text-muted)]" />
+                    <span className="font-medium text-[var(--text-primary)]">Download JSON</span>
+                    <span className="text-xs text-[var(--text-dim)]">Save locally first</span>
+                  </button>
+                  <button
+                    onClick={handleSubmit}
+                    disabled={isSubmitting || !canProceed()}
+                    className="flex-1 flex flex-col items-center gap-2 py-6 bg-[var(--accent-primary)] rounded-[var(--radius-xl)] text-[var(--bg-primary)] hover:bg-[var(--accent-secondary)] transition-all disabled:opacity-50"
+                  >
+                    {isSubmitting ? <Loader2 size={24} className="animate-spin" /> : <Send size={24} />}
+                    <span className="font-semibold">Submit to Gallery</span>
+                    <span className="text-xs opacity-60">Coming soon</span>
+                  </button>
                 </div>
               </div>
             </div>
-
-            <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] p-6">
-              <h3 className="font-medium mb-4">Export As:</h3>
-              <div className="flex gap-4">
-                <button
-                  onClick={handleSubmit}
-                  disabled={isSubmitting || !canProceed()}
-                  className="flex-1 flex flex-col items-center gap-2 py-6 bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-[var(--radius-md)] hover:border-[var(--border-medium)] transition-all disabled:opacity-50"
-                >
-                  <Download size={24} />
-                  <span className="font-medium">Download JSON</span>
-                  <span className="text-xs text-[var(--text-muted)]">Save locally first</span>
-                </button>
-                <button
-                  onClick={handleSubmit}
-                  disabled={isSubmitting || !canProceed()}
-                  className="flex-1 flex flex-col items-center gap-2 py-6 bg-[var(--accent-primary)] rounded-[var(--radius-md)] text-black hover:bg-[var(--accent-secondary)] transition-all disabled:opacity-50"
-                >
-                  {isSubmitting ? <Loader2 size={24} className="animate-spin" /> : <Send size={24} />}
-                  <span className="font-medium">Submit to Gallery</span>
-                  <span className="text-xs opacity-60">Coming soon</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Navigation */}
-        <div className="flex justify-between mt-8 pt-8 border-t border-[var(--border-subtle)]">
-          <button
-            onClick={prevStep}
-            disabled={currentStep === 1}
-            className="flex items-center gap-2 px-6 py-3 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-md)] text-[var(--text-secondary)] hover:border-[var(--border-medium)] hover:text-[var(--text-primary)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <ArrowLeft size={18} />
-            Back
-          </button>
-          
-          {currentStep < 5 && (
-            <button
-              onClick={nextStep}
-              disabled={!canProceed()}
-              className="flex items-center gap-2 px-6 py-3 bg-[var(--accent-primary)] rounded-[var(--radius-md)] text-black font-semibold hover:bg-[var(--accent-secondary)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Continue
-              <ArrowRight size={18} />
-            </button>
           )}
+
+          {/* Navigation */}
+          <div className="flex justify-between mt-10 pt-8 border-t border-[var(--border-subtle)]">
+            <button
+              onClick={prevStep}
+              disabled={currentStep === 1}
+              className="flex items-center gap-2 px-5 py-2.5 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] text-sm font-medium text-[var(--text-secondary)] hover:border-[var(--border-medium)] hover:text-[var(--text-primary)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ArrowLeft size={16} />
+              Back
+            </button>
+            
+            {currentStep < 5 && (
+              <button
+                onClick={nextStep}
+                disabled={!canProceed()}
+                className="flex items-center gap-2 px-5 py-2.5 bg-[var(--accent-primary)] rounded-[var(--radius-lg)] text-sm font-semibold text-[var(--bg-primary)] hover:bg-[var(--accent-secondary)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Continue
+                <ArrowRight size={16} />
+              </button>
+            )}
+          </div>
         </div>
       </main>
 
       <Footer />
-    </>
+    </div>
   )
 }
 
+function InfoCard({ icon, title, description }: { icon: string; title: string; description: string }) {
+  return (
+    <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-xl)] p-5 text-center">
+      <span className="text-2xl mb-3 block">{icon}</span>
+      <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-1">{title}</h3>
+      <p className="text-sm text-[var(--text-muted)] leading-relaxed">{description}</p>
+    </div>
+  )
+}
+
+function SummaryItem({ value, label }: { value: number; label: string }) {
+  return (
+    <div>
+      <div className="text-2xl font-bold text-[var(--accent-primary)]">{value}</div>
+      <div className="text-sm text-[var(--text-dim)]">{label}</div>
+    </div>
+  )
+}

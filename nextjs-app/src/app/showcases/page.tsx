@@ -6,7 +6,7 @@ import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import { ShowcaseCard } from '@/components/ShowcaseCard'
 import { seedShowcases } from '@/lib/seed-showcases'
-import { Target, Zap, FlaskConical, Plus } from 'lucide-react'
+import { Target, Zap, FlaskConical, Plus, ArrowRight } from 'lucide-react'
 
 type Category = 'all' | 'web' | 'design' | 'automation' | 'content'
 
@@ -26,119 +26,129 @@ export default function ShowcasesPage() {
   ]
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Header />
 
-      <main>
+      <main className="flex-1">
         {/* Hero Section */}
-        <section className="text-center px-8 pt-8 pb-12">
-          <span 
-            className="inline-block font-mono text-[0.7rem] font-semibold tracking-widest px-3 py-1.5 rounded-full text-black mb-5"
-            style={{ 
-              background: 'linear-gradient(135deg, var(--accent-primary), #f59e0b)',
-              animation: 'pulse-glow 2s ease-in-out infinite'
-            }}
-          >
-            SEE THEM IN ACTION
-          </span>
-          <h1 
-            className="text-5xl font-bold tracking-tight mb-3"
-            style={{ 
-              background: 'linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}
-          >
-            Prompts, Proven
-          </h1>
-          <p className="text-xl text-[var(--text-secondary)] max-w-lg mx-auto">
-            Real before/after examples showing <em className="text-[var(--accent-primary)] not-italic">exactly</em> what each prompt does.
-          </p>
+        <section className="pt-12 pb-10 px-6">
+          <div className="max-w-2xl mx-auto text-center">
+            <span className="inline-flex items-center px-3 py-1.5 text-xs font-semibold uppercase tracking-wider bg-[var(--accent-subtle)] text-[var(--accent-primary)] rounded-[var(--radius-full)] mb-6">
+              See them in action
+            </span>
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)] mb-4 text-balance">
+              Prompts, <span className="text-[var(--accent-primary)]">Proven</span>
+            </h1>
+            <p className="text-base text-[var(--text-muted)] leading-relaxed">
+              Real before/after examples showing exactly what each prompt does.
+            </p>
+          </div>
         </section>
 
-        {/* Value Proposition */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto px-8 mb-12">
-          <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] p-6 text-center transition-all hover:border-[var(--border-medium)] hover:-translate-y-0.5">
-            <div className="text-3xl mb-4">
-              <Target className="w-8 h-8 mx-auto text-[var(--accent-primary)]" />
-            </div>
-            <h3 className="text-base font-semibold mb-2">Know When to Use It</h3>
-            <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-              Each showcase shows the situation that calls for this prompt.
-            </p>
+        {/* Value Props */}
+        <section className="px-6 pb-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+            <ValueCard 
+              icon={Target}
+              title="Know When to Use It"
+              description="Each showcase shows the situation that calls for this prompt."
+            />
+            <ValueCard 
+              icon={Zap}
+              title="See the Difference"
+              description="Before/after comparisons so you know what to expect."
+            />
+            <ValueCard 
+              icon={FlaskConical}
+              title="Real Outputs"
+              description="Actual AI responses, not hypothetical examples."
+            />
           </div>
-          <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] p-6 text-center transition-all hover:border-[var(--border-medium)] hover:-translate-y-0.5">
-            <div className="text-3xl mb-4">
-              <Zap className="w-8 h-8 mx-auto text-[var(--accent-primary)]" />
-            </div>
-            <h3 className="text-base font-semibold mb-2">See the Difference</h3>
-            <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-              Before/after comparisons so you know what to expect.
-            </p>
-          </div>
-          <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] p-6 text-center transition-all hover:border-[var(--border-medium)] hover:-translate-y-0.5">
-            <div className="text-3xl mb-4">
-              <FlaskConical className="w-8 h-8 mx-auto text-[var(--accent-primary)]" />
-            </div>
-            <h3 className="text-base font-semibold mb-2">Real Outputs</h3>
-            <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-              Actual AI responses, not hypothetical examples.
-            </p>
-          </div>
-        </div>
+        </section>
 
         {/* Filters */}
-        <nav className="flex justify-center flex-wrap gap-2 px-8 pb-8">
-          {categories.map(cat => (
-            <button
-              key={cat.value}
-              onClick={() => setActiveFilter(cat.value)}
-              className={`text-sm font-medium px-4 py-2 rounded-full border transition-all duration-150 ${
-                activeFilter === cat.value
-                  ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] border-[var(--text-primary)]'
-                  : 'bg-[var(--bg-secondary)] text-[var(--text-secondary)] border-[var(--border-subtle)] hover:border-[var(--border-medium)] hover:text-[var(--text-primary)]'
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </nav>
-
-        {/* Showcases Grid */}
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(380px,1fr))] gap-8 px-8 pb-16 max-w-[1400px] mx-auto">
-          {filteredShowcases.map((showcase, index) => (
-            <div 
-              key={showcase.id}
-              style={{ animationDelay: `${index * 0.05}s` }}
-            >
-              <ShowcaseCard 
-                showcase={showcase} 
-                featured={index === 0}
-              />
-            </div>
-          ))}
+        <div className="sticky top-16 z-40 backdrop-blur-xl bg-[var(--bg-primary)]/80 border-b border-[var(--border-subtle)]">
+          <nav className="flex justify-center gap-2 px-6 py-4 max-w-6xl mx-auto">
+            {categories.map(cat => (
+              <button
+                key={cat.value}
+                onClick={() => setActiveFilter(cat.value)}
+                className={`px-4 py-2 text-sm font-medium rounded-[var(--radius-full)] border transition-all duration-150 ${
+                  activeFilter === cat.value
+                    ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] border-[var(--text-primary)]'
+                    : 'bg-[var(--bg-card)] text-[var(--text-muted)] border-[var(--border-subtle)] hover:border-[var(--border-medium)] hover:text-[var(--text-primary)]'
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </nav>
         </div>
 
+        {/* Showcases Grid */}
+        <section className="px-6 py-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {filteredShowcases.map((showcase, index) => (
+              <div 
+                key={showcase.id}
+                data-animate={Math.min(index + 1, 8)}
+              >
+                <ShowcaseCard 
+                  showcase={showcase} 
+                  featured={index === 0}
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Empty state */}
+          {filteredShowcases.length === 0 && (
+            <div className="text-center py-16">
+              <p className="text-[var(--text-muted)]">No showcases found in this category.</p>
+            </div>
+          )}
+        </section>
+
         {/* CTA Section */}
-        <section className="py-16 px-8 bg-gradient-to-b from-transparent to-[var(--bg-secondary)]">
+        <section className="px-6 py-16 bg-gradient-to-b from-transparent via-[var(--bg-secondary)]/50 to-[var(--bg-secondary)]">
           <div className="max-w-xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-3">Built something cool with AI?</h2>
-            <p className="text-lg text-[var(--text-secondary)] mb-6">
+            <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-3">
+              Built something cool with AI?
+            </h2>
+            <p className="text-base text-[var(--text-muted)] mb-8 leading-relaxed">
               Share your prompt history and earn money when others learn from your journey.
             </p>
             <Link 
               href="/export"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--accent-primary)] rounded-[var(--radius-md)] text-base font-semibold text-black hover:bg-[var(--accent-secondary)] hover:-translate-y-0.5 transition-all no-underline"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--accent-primary)] text-[var(--bg-primary)] rounded-[var(--radius-lg)] text-base font-semibold hover:bg-[var(--accent-secondary)] transition-all hover:-translate-y-0.5 group"
             >
-              <Plus size={20} />
+              <Plus size={18} />
               Submit Your Showcase
+              <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
             </Link>
           </div>
         </section>
       </main>
 
       <Footer />
-    </>
+    </div>
   )
 }
 
+interface ValueCardProps {
+  icon: typeof Target
+  title: string
+  description: string
+}
+
+function ValueCard({ icon: Icon, title, description }: ValueCardProps) {
+  return (
+    <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-xl)] p-6 text-center transition-all hover:border-[var(--border-medium)] hover:shadow-[var(--shadow-md)]">
+      <div className="inline-flex items-center justify-center w-10 h-10 rounded-[var(--radius-lg)] bg-[var(--accent-subtle)] mb-4">
+        <Icon className="w-5 h-5 text-[var(--accent-primary)]" />
+      </div>
+      <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-2">{title}</h3>
+      <p className="text-sm text-[var(--text-muted)] leading-relaxed">{description}</p>
+    </div>
+  )
+}

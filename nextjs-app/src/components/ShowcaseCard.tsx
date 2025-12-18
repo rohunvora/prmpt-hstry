@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Eye, Lock, MessageSquare, CheckCircle, Clock } from 'lucide-react'
+import { Eye, Lock, MessageSquare, IterationCw, Clock, ChevronRight } from 'lucide-react'
 import type { Showcase } from '@/lib/types'
 
 interface ShowcaseCardProps {
@@ -12,138 +12,142 @@ interface ShowcaseCardProps {
 export function ShowcaseCard({ showcase, featured = false }: ShowcaseCardProps) {
   const priceFormatted = (showcase.price_cents / 100).toFixed(2)
   
-  const categoryColors: Record<string, string> = {
-    web: 'bg-[var(--accent-glow)] text-[var(--accent-primary)]',
-    design: 'bg-[rgba(236,72,153,0.15)] text-[#ec4899]',
-    automation: 'bg-[rgba(34,197,94,0.15)] text-[#22c55e]',
-    content: 'bg-[rgba(99,102,241,0.15)] text-[#818cf8]',
+  const categoryStyles: Record<string, { bg: string; text: string; label: string }> = {
+    web: { bg: 'bg-[var(--accent-subtle)]', text: 'text-[var(--accent-primary)]', label: 'Web App' },
+    design: { bg: 'bg-pink-500/10', text: 'text-pink-400', label: 'Design' },
+    automation: { bg: 'bg-emerald-500/10', text: 'text-emerald-400', label: 'Automation' },
+    content: { bg: 'bg-indigo-500/10', text: 'text-indigo-400', label: 'Content' },
   }
+
+  const style = categoryStyles[showcase.category] || categoryStyles.web
 
   return (
     <article 
-      className={`bg-[var(--bg-card)] border rounded-[var(--radius-lg)] overflow-hidden transition-all duration-250 hover:border-[var(--border-medium)] hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] animate-fadeIn ${
+      className={`group relative bg-[var(--bg-card)] border rounded-[var(--radius-2xl)] overflow-hidden transition-all duration-300 hover:shadow-[var(--shadow-lg)] animate-fadeIn ${
         featured 
-          ? 'border-[var(--accent-primary)] shadow-[0_0_0_1px_var(--accent-glow)]' 
-          : 'border-[var(--border-subtle)]'
+          ? 'border-[var(--accent-primary)]/50 shadow-[0_0_40px_-12px_var(--accent-primary)]' 
+          : 'border-[var(--border-subtle)] hover:border-[var(--border-medium)]'
       }`}
     >
-      {/* Preview Section */}
-      <div className="relative bg-[var(--bg-primary)] border-b border-[var(--border-subtle)]">
-        {/* Browser Chrome */}
-        <div className="flex items-center gap-3 px-4 py-3 bg-[var(--bg-secondary)] border-b border-[var(--border-subtle)]">
+      {/* Featured Badge */}
+      {featured && (
+        <div className="absolute top-4 right-4 z-10 px-2.5 py-1 text-[0.625rem] font-bold uppercase tracking-wider bg-gradient-to-r from-[var(--accent-primary)] to-amber-500 text-[var(--bg-primary)] rounded-[var(--radius-md)]">
+          ★ Featured
+        </div>
+      )}
+
+      {/* Preview Section with Browser Chrome */}
+      <div className="relative border-b border-[var(--border-subtle)]">
+        {/* Minimal Browser Chrome */}
+        <div className="flex items-center gap-2 px-4 py-3 bg-[var(--bg-secondary)]">
           <div className="flex gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
-            <span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
-            <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[var(--border-medium)]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[var(--border-medium)]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[var(--border-medium)]" />
           </div>
-          <div className="flex-1 text-center">
-            <span className="font-mono text-xs text-[var(--text-muted)] bg-[var(--bg-primary)] px-3 py-1 rounded">
-              {showcase.category} • showcase
+          <div className="flex-1 flex justify-center">
+            <span className="px-3 py-1 text-[0.6875rem] font-mono text-[var(--text-dim)] bg-[var(--bg-primary)] rounded-[var(--radius-sm)]">
+              {showcase.category}://showcase
             </span>
           </div>
         </div>
         
         {/* Content Preview */}
-        <div className="h-[180px] p-4 flex flex-col gap-2">
-          {showcase.preview_messages?.slice(0, 2).map((msg, i) => (
-            <div 
-              key={i}
-              className={`p-2 rounded text-xs truncate ${
-                msg.role === 'user' 
-                  ? 'bg-[var(--accent-glow)] text-[var(--accent-primary)]' 
-                  : 'bg-[var(--bg-secondary)] text-[var(--text-secondary)]'
-              }`}
-            >
-              <span className="font-mono text-[0.65rem] uppercase opacity-60 mr-2">
-                {msg.role === 'user' ? 'You' : 'AI'}:
-              </span>
-              {msg.content.substring(0, 80)}...
-            </div>
-          ))}
-          <div className="flex-1 flex items-center justify-center text-[var(--text-muted)]">
-            <Lock size={16} className="mr-2" />
-            <span className="text-sm">{showcase.stats.prompts - 2}+ more messages</span>
+        <div className="h-[160px] p-4 bg-[var(--bg-primary)]">
+          <div className="space-y-2">
+            {showcase.preview_messages?.slice(0, 2).map((msg, i) => (
+              <div 
+                key={i}
+                className={`p-3 rounded-[var(--radius-lg)] text-xs leading-relaxed ${
+                  msg.role === 'user' 
+                    ? 'bg-[var(--accent-subtle)] text-[var(--accent-primary)] ml-8' 
+                    : 'bg-[var(--bg-card)] text-[var(--text-secondary)] mr-8'
+                }`}
+              >
+                <span className="font-mono text-[0.625rem] uppercase opacity-50 block mb-1">
+                  {msg.role === 'user' ? 'You' : 'AI'}
+                </span>
+                <span className="line-clamp-2">{msg.content}</span>
+              </div>
+            ))}
+          </div>
+          
+          {/* Locked overlay */}
+          <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[var(--bg-primary)] to-transparent flex items-end justify-center pb-4">
+            <span className="flex items-center gap-1.5 text-xs text-[var(--text-muted)]">
+              <Lock size={12} />
+              {showcase.stats.prompts - 2}+ more messages
+            </span>
           </div>
         </div>
-        
-        {featured && (
-          <span className="absolute top-3 right-3 text-[0.7rem] font-semibold px-2 py-1 rounded-[var(--radius-sm)] text-black" style={{ background: 'linear-gradient(135deg, var(--accent-primary), #f59e0b)' }}>
-            ⭐ Featured
-          </span>
-        )}
       </div>
       
       {/* Info Section */}
-      <div className="p-6">
+      <div className="p-5">
+        {/* Category & Date */}
         <div className="flex items-center justify-between mb-3">
-          <span className={`font-mono text-[0.65rem] font-medium uppercase tracking-wide px-2 py-1 rounded-[var(--radius-sm)] ${categoryColors[showcase.category] || categoryColors.web}`}>
-            {showcase.category}
+          <span className={`inline-flex items-center px-2 py-1 text-[0.625rem] font-semibold uppercase tracking-wide rounded-[var(--radius-sm)] ${style.bg} ${style.text}`}>
+            {style.label}
           </span>
-          <span className="text-xs text-[var(--text-muted)]">
-            {new Date(showcase.created_at).toLocaleDateString()}
+          <span className="text-[0.6875rem] text-[var(--text-dim)]">
+            {new Date(showcase.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
           </span>
         </div>
         
-        <h3 className="text-lg font-semibold tracking-tight mb-2 text-[var(--text-primary)]">
+        {/* Title & Description */}
+        <h3 className="text-base font-semibold tracking-tight mb-2 text-[var(--text-primary)] line-clamp-1 group-hover:text-[var(--accent-primary)] transition-colors">
           {showcase.title}
         </h3>
         
-        <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-4 line-clamp-2">
+        <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-4 line-clamp-2">
           {showcase.description}
         </p>
         
-        {/* Stats */}
-        <div className="flex gap-4 p-3 bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-[var(--radius-md)] mb-4">
-          <div className="flex items-center gap-1.5">
-            <MessageSquare size={14} className="text-[var(--text-muted)]" />
-            <span className="font-semibold text-sm">{showcase.stats.prompts}</span>
-            <span className="text-xs text-[var(--text-muted)]">prompts</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <CheckCircle size={14} className="text-[var(--text-muted)]" />
-            <span className="font-semibold text-sm">{showcase.stats.iterations}</span>
-            <span className="text-xs text-[var(--text-muted)]">iterations</span>
-          </div>
+        {/* Stats Row */}
+        <div className="flex items-center gap-4 py-3 px-4 bg-[var(--bg-secondary)] rounded-[var(--radius-lg)] mb-4">
+          <StatItem icon={MessageSquare} value={showcase.stats.prompts} label="prompts" />
+          <div className="w-px h-4 bg-[var(--border-subtle)]" />
+          <StatItem icon={IterationCw} value={showcase.stats.iterations} label="iterations" />
           {showcase.stats.hours && (
-            <div className="flex items-center gap-1.5">
-              <Clock size={14} className="text-[var(--text-muted)]" />
-              <span className="font-semibold text-sm">{showcase.stats.hours}</span>
-              <span className="text-xs text-[var(--text-muted)]">hours</span>
-            </div>
+            <>
+              <div className="w-px h-4 bg-[var(--border-subtle)]" />
+              <StatItem icon={Clock} value={showcase.stats.hours} label="hours" />
+            </>
           )}
         </div>
         
         {/* Creator */}
         {showcase.creator && (
-          <div className="flex items-center gap-3 mb-4">
+          <div className="flex items-center gap-3 mb-5">
             <div 
-              className="w-9 h-9 rounded-full flex items-center justify-center font-semibold text-sm"
-              style={{ background: 'linear-gradient(135deg, var(--accent-primary), #f59e0b)' }}
+              className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold bg-gradient-to-br from-[var(--accent-primary)] to-amber-500 text-[var(--bg-primary)]"
             >
               {showcase.creator.display_name?.[0] || showcase.creator.username?.[0] || 'A'}
             </div>
             <div className="flex flex-col">
-              <span className="font-medium text-sm">{showcase.creator.display_name || showcase.creator.username || 'Anonymous'}</span>
-              <span className="text-xs text-[var(--text-muted)]">Creator</span>
+              <span className="text-sm font-medium text-[var(--text-primary)]">
+                {showcase.creator.display_name || showcase.creator.username || 'Anonymous'}
+              </span>
+              <span className="text-[0.6875rem] text-[var(--text-dim)]">Creator</span>
             </div>
           </div>
         )}
         
         {/* Actions */}
-        <div className="flex gap-3">
+        <div className="flex gap-2">
           <Link 
             href={`/showcase/${showcase.id}`}
-            className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-[var(--radius-md)] text-sm font-medium text-[var(--text-secondary)] hover:border-[var(--border-medium)] hover:text-[var(--text-primary)] transition-all no-underline"
+            className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] text-sm font-medium text-[var(--text-secondary)] hover:border-[var(--border-medium)] hover:text-[var(--text-primary)] transition-all"
           >
             <Eye size={16} />
             Preview
           </Link>
           <Link 
             href={`/showcase/${showcase.id}?unlock=true`}
-            className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-[var(--accent-primary)] rounded-[var(--radius-md)] text-sm font-semibold text-black hover:bg-[var(--accent-secondary)] hover:-translate-y-0.5 transition-all no-underline"
+            className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 bg-[var(--accent-primary)] rounded-[var(--radius-lg)] text-sm font-semibold text-[var(--bg-primary)] hover:bg-[var(--accent-secondary)] transition-all group/btn"
           >
-            <Lock size={16} />
-            Unlock ${priceFormatted}
+            ${priceFormatted}
+            <ChevronRight size={16} className="transition-transform group-hover/btn:translate-x-0.5" />
           </Link>
         </div>
       </div>
@@ -151,3 +155,12 @@ export function ShowcaseCard({ showcase, featured = false }: ShowcaseCardProps) 
   )
 }
 
+function StatItem({ icon: Icon, value, label }: { icon: typeof MessageSquare; value: number; label: string }) {
+  return (
+    <div className="flex items-center gap-1.5">
+      <Icon size={14} className="text-[var(--text-dim)]" />
+      <span className="text-sm font-semibold text-[var(--text-primary)]">{value}</span>
+      <span className="text-xs text-[var(--text-dim)]">{label}</span>
+    </div>
+  )
+}

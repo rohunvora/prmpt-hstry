@@ -27,91 +27,49 @@ export function Header() {
   }, [supabase])
 
   const isActive = (path: string) => pathname === path
+  const isShowcasePath = pathname.startsWith('/showcase')
 
   return (
-    <header className="px-8 py-6 relative">
-      {/* Gradient glow behind header */}
-      <div 
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at center, var(--accent-glow) 0%, transparent 70%)' }}
-      />
-      
-      <nav className="flex items-center justify-between max-w-[1400px] mx-auto w-full relative">
-        <Link href="/" className="flex items-center gap-3 no-underline">
-          <span className="text-[1.75rem] text-[var(--accent-primary)]">⌘</span>
-          <span className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">prompt.gallery</span>
+    <header className="sticky top-0 z-50 backdrop-blur-xl bg-[var(--bg-primary)]/80 border-b border-[var(--border-subtle)]">
+      <nav className="flex items-center justify-between max-w-6xl mx-auto px-6 h-16">
+        {/* Logo */}
+        <Link 
+          href="/" 
+          className="flex items-center gap-2.5 group"
+        >
+          <span className="text-xl text-[var(--accent-primary)] transition-transform group-hover:scale-110">⌘</span>
+          <span className="text-lg font-semibold tracking-tight text-[var(--text-primary)]">
+            prompt.gallery
+          </span>
         </Link>
         
-        <div className="flex items-center gap-6">
-          <Link 
-            href="/" 
-            className={`text-sm font-medium py-2 relative transition-colors no-underline ${
-              isActive('/') 
-                ? 'text-[var(--text-primary)]' 
-                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
-            }`}
-          >
+        {/* Navigation Links */}
+        <div className="flex items-center gap-1">
+          <NavLink href="/" active={isActive('/')}>
             Prompts
-            {isActive('/') && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--accent-primary)] rounded-sm" />
-            )}
-          </Link>
+          </NavLink>
           
-          <Link 
-            href="/showcases" 
-            className={`text-sm font-medium py-2 relative transition-colors no-underline ${
-              pathname.startsWith('/showcase') 
-                ? 'text-[var(--text-primary)]' 
-                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
-            }`}
-          >
+          <NavLink href="/showcases" active={isShowcasePath}>
             Showcases
-            {pathname.startsWith('/showcase') && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--accent-primary)] rounded-sm" />
-            )}
-          </Link>
+          </NavLink>
           
-          <Link 
-            href="/export" 
-            className={`text-sm font-medium py-2 flex items-center gap-2 relative transition-colors no-underline ${
-              isActive('/export') 
-                ? 'text-[var(--text-primary)]' 
-                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
-            }`}
-          >
+          <NavLink href="/export" active={isActive('/export')} badge="New">
             Export
-            <span 
-              className="font-mono text-[0.6rem] font-semibold tracking-wide px-1.5 py-0.5 rounded text-black"
-              style={{ 
-                background: 'linear-gradient(135deg, var(--accent-primary), #f59e0b)',
-                animation: 'badge-pulse 2s ease-in-out infinite'
-              }}
-            >
-              NEW
-            </span>
-            {isActive('/export') && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--accent-primary)] rounded-sm" />
-            )}
-          </Link>
+          </NavLink>
 
-          {user ? (
-            <Link 
-              href="/dashboard" 
-              className={`text-sm font-medium py-2 relative transition-colors no-underline ${
-                isActive('/dashboard') 
-                  ? 'text-[var(--text-primary)]' 
-                  : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
-              }`}
-            >
+          {user && (
+            <NavLink href="/dashboard" active={isActive('/dashboard')}>
               Dashboard
-              {isActive('/dashboard') && (
-                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--accent-primary)] rounded-sm" />
-              )}
-            </Link>
-          ) : (
+            </NavLink>
+          )}
+        </div>
+
+        {/* Right Side Actions */}
+        <div className="flex items-center gap-3">
+          {!user && (
             <Link 
               href="/auth" 
-              className="text-sm font-medium px-4 py-2 bg-[var(--accent-primary)] text-black rounded-lg hover:bg-[var(--accent-secondary)] transition-colors no-underline"
+              className="px-4 py-2 text-sm font-medium bg-[var(--accent-primary)] text-[var(--bg-primary)] rounded-[var(--radius-lg)] hover:bg-[var(--accent-secondary)] transition-all hover:-translate-y-px"
             >
               Sign In
             </Link>
@@ -121,10 +79,10 @@ export function Header() {
             href="https://github.com/rohunvora/prmpt-hstry" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+            className="p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] rounded-[var(--radius-md)] hover:bg-[var(--bg-card)] transition-all"
             aria-label="View on GitHub"
           >
-            <Github size={22} />
+            <Github size={20} />
           </a>
         </div>
       </nav>
@@ -132,3 +90,31 @@ export function Header() {
   )
 }
 
+interface NavLinkProps {
+  href: string
+  active: boolean
+  children: React.ReactNode
+  badge?: string
+}
+
+function NavLink({ href, active, children, badge }: NavLinkProps) {
+  return (
+    <Link 
+      href={href}
+      className={`relative px-3 py-2 text-sm font-medium rounded-[var(--radius-md)] transition-all ${
+        active 
+          ? 'text-[var(--text-primary)] bg-[var(--bg-card)]' 
+          : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)]/50'
+      }`}
+    >
+      <span className="flex items-center gap-2">
+        {children}
+        {badge && (
+          <span className="px-1.5 py-0.5 text-[0.625rem] font-bold uppercase tracking-wider bg-[var(--accent-primary)] text-[var(--bg-primary)] rounded">
+            {badge}
+          </span>
+        )}
+      </span>
+    </Link>
+  )
+}

@@ -1,111 +1,68 @@
 import Link from 'next/link'
 
 export function Footer() {
+  const currentYear = new Date().getFullYear()
+
   return (
-    <footer className="border-t border-[var(--border-subtle)]">
-      <div className="max-w-6xl mx-auto px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+    <footer className="border-t border-[var(--border-subtle)] bg-[var(--bg-secondary)]">
+      <div className="max-w-6xl mx-auto px-6 py-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
           {/* Brand */}
-          <div className="md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 no-underline mb-3">
-              <span className="text-xl text-[var(--accent-primary)]">⌘</span>
-              <span className="text-lg font-bold text-[var(--text-primary)]">prompt.gallery</span>
+          <div className="col-span-2 md:col-span-1">
+            <Link href="/" className="flex items-center gap-2 mb-4 group">
+              <span className="text-lg text-[var(--accent-primary)] transition-transform group-hover:scale-110">⌘</span>
+              <span className="text-base font-semibold text-[var(--text-primary)]">prompt.gallery</span>
             </Link>
-            <p className="text-sm text-[var(--text-muted)]">
-              The first marketplace for prompt journeys.
+            <p className="text-sm text-[var(--text-muted)] leading-relaxed">
+              The first marketplace for prompt journeys. Learn from real AI conversations.
             </p>
           </div>
           
           {/* Browse */}
           <div>
-            <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-3">Browse</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/" className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
-                  All Prompts
-                </Link>
-              </li>
-              <li>
-                <Link href="/showcases" className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
-                  Showcases
-                </Link>
-              </li>
-              <li>
-                <Link href="/showcases?category=web" className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
-                  Web Apps
-                </Link>
-              </li>
-              <li>
-                <Link href="/showcases?category=automation" className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
-                  Automation
-                </Link>
-              </li>
+            <h4 className="text-xs font-semibold text-[var(--text-primary)] uppercase tracking-wider mb-4">Browse</h4>
+            <ul className="space-y-2.5">
+              <FooterLink href="/">All Prompts</FooterLink>
+              <FooterLink href="/showcases">Showcases</FooterLink>
+              <FooterLink href="/showcases?category=web">Web Apps</FooterLink>
+              <FooterLink href="/showcases?category=automation">Automation</FooterLink>
             </ul>
           </div>
           
           {/* Creators */}
           <div>
-            <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-3">For Creators</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/export" className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
-                  Upload Showcase
-                </Link>
-              </li>
-              <li>
-                <Link href="/dashboard" className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
-                  Creator Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link href="/about#pricing" className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
-                  Pricing & Payouts
-                </Link>
-              </li>
+            <h4 className="text-xs font-semibold text-[var(--text-primary)] uppercase tracking-wider mb-4">For Creators</h4>
+            <ul className="space-y-2.5">
+              <FooterLink href="/export">Upload Showcase</FooterLink>
+              <FooterLink href="/dashboard">Creator Dashboard</FooterLink>
+              <FooterLink href="/about#pricing">Pricing & Payouts</FooterLink>
             </ul>
           </div>
           
           {/* Company */}
           <div>
-            <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-3">Company</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/about" className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacy" className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <a 
-                  href="https://github.com/rohunvora/prmpt-hstry" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
-                >
-                  GitHub
-                </a>
-              </li>
+            <h4 className="text-xs font-semibold text-[var(--text-primary)] uppercase tracking-wider mb-4">Company</h4>
+            <ul className="space-y-2.5">
+              <FooterLink href="/about">About</FooterLink>
+              <FooterLink href="/terms">Terms of Service</FooterLink>
+              <FooterLink href="/privacy">Privacy Policy</FooterLink>
+              <FooterLink href="https://github.com/rohunvora/prmpt-hstry" external>GitHub</FooterLink>
             </ul>
           </div>
         </div>
         
-        <div className="pt-8 border-t border-[var(--border-subtle)] text-center text-sm text-[var(--text-muted)]">
-          <p>
-            © {new Date().getFullYear()} prompt.gallery. Built with{' '}
+        {/* Bottom */}
+        <div className="pt-8 border-t border-[var(--border-subtle)] flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-[var(--text-dim)]">
+            © {currentYear} prompt.gallery
+          </p>
+          <p className="text-sm text-[var(--text-dim)]">
+            Built with{' '}
             <a 
               href="https://cursor.com" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-[var(--accent-primary)] hover:text-[var(--accent-secondary)]"
+              className="text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors"
             >
               Cursor
             </a>
@@ -114,7 +71,7 @@ export function Footer() {
               href="https://anthropic.com" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-[var(--accent-primary)] hover:text-[var(--accent-secondary)]"
+              className="text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors"
             >
               Claude
             </a>
@@ -122,5 +79,39 @@ export function Footer() {
         </div>
       </div>
     </footer>
+  )
+}
+
+interface FooterLinkProps {
+  href: string
+  children: React.ReactNode
+  external?: boolean
+}
+
+function FooterLink({ href, children, external }: FooterLinkProps) {
+  if (external) {
+    return (
+      <li>
+        <a 
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+        >
+          {children}
+        </a>
+      </li>
+    )
+  }
+
+  return (
+    <li>
+      <Link 
+        href={href}
+        className="text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+      >
+        {children}
+      </Link>
+    </li>
   )
 }

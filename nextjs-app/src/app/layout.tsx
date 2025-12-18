@@ -1,5 +1,16 @@
 import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist",
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+});
 
 export const metadata: Metadata = {
   title: "prompt.gallery — Monetize Your AI Prompt Histories",
@@ -13,16 +24,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link 
-          href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&display=swap" 
-          rel="stylesheet" 
-        />
-      </head>
-      <body>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable}`}>
+      <body style={{ fontFamily: 'var(--font-geist), system-ui, sans-serif' }}>
         <div className="noise" />
         {children}
       </body>
