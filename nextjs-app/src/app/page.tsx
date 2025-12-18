@@ -50,12 +50,12 @@ export default function PromptsPage() {
       
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="py-16 px-6">
+        <section className="pt-20 pb-8 px-6 md:pt-24 md:pb-12">
           <div className="max-w-2xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-[var(--text-primary)] mb-4">
               Prompts that actually work
             </h1>
-            <p className="text-lg text-[var(--text-secondary)] mb-8">
+            <p className="text-lg text-[var(--text-secondary)] mb-10">
               Curated collection of battle-tested prompts. Click to copy, paste to use.
             </p>
             
@@ -70,14 +70,14 @@ export default function PromptsPage() {
                 placeholder="Search prompts..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[var(--accent-primary)] transition-colors"
+                className="w-full pl-12 pr-4 py-3.5 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[var(--accent-primary)] transition-colors"
               />
             </div>
           </div>
         </section>
 
         {/* Filters */}
-        <nav className="flex justify-center flex-wrap gap-2 px-6 pb-8">
+        <nav className="flex justify-center flex-wrap gap-3 px-6 pt-4 pb-12">
           {categories.map(cat => (
             <button
               key={cat.value}
@@ -103,7 +103,7 @@ export default function PromptsPage() {
         )}
 
         {/* Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-6 pb-16 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-6 md:px-8 pb-24 max-w-7xl mx-auto">
           {filteredPrompts.map((prompt, index) => (
             <div 
               key={prompt.id}
