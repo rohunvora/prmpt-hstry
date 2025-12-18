@@ -33,6 +33,27 @@
   --color-foreground: var(--text-primary);
   --font-sans: 'Instrument Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'IBM Plex Mono', 'SF Mono', Consolas, monospace;
+  
+  /* Custom colors for Tailwind utilities */
+  --color-bg-primary: #0a0a0b;
+  --color-bg-secondary: #111113;
+  --color-bg-card: #161618;
+  --color-bg-card-hover: #1a1a1d;
+  --color-border-subtle: #232326;
+  --color-border-medium: #2a2a2e;
+  --color-text-primary: #f4f4f5;
+  --color-text-secondary: #a1a1aa;
+  --color-text-muted: #71717a;
+  --color-accent-primary: #f97316;
+  --color-accent-secondary: #fb923c;
+  --color-accent-glow: rgba(249, 115, 22, 0.15);
+  --color-success: #22c55e;
+  --color-success-glow: rgba(34, 197, 94, 0.2);
+  
+  /* Border radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
 }
 
 /* === Reset & Base === */
@@ -139,4 +160,34 @@ a {
 a:hover {
   color: var(--accent-secondary);
 }
+
+/* === Explicit utility classes for card styling === */
+/* These override Tailwind's arbitrary value compilation issues */
+.bg-\[var\(--bg-card\)\] { background-color: var(--bg-card) !important; }
+.bg-\[var\(--bg-card-hover\)\] { background-color: var(--bg-card-hover) !important; }
+.bg-\[var\(--bg-primary\)\] { background-color: var(--bg-primary) !important; }
+.bg-\[var\(--bg-secondary\)\] { background-color: var(--bg-secondary) !important; }
+.bg-\[var\(--accent-glow\)\] { background-color: var(--accent-glow) !important; }
+.bg-\[var\(--success-glow\)\] { background-color: var(--success-glow) !important; }
+
+.border-\[var\(--border-subtle\)\] { border-color: var(--border-subtle) !important; }
+.border-\[var\(--border-medium\)\] { border-color: var(--border-medium) !important; }
+.border-\[var\(--accent-primary\)\] { border-color: var(--accent-primary) !important; }
+.border-\[var\(--success\)\] { border-color: var(--success) !important; }
+
+.text-\[var\(--text-primary\)\] { color: var(--text-primary) !important; }
+.text-\[var\(--text-secondary\)\] { color: var(--text-secondary) !important; }
+.text-\[var\(--text-muted\)\] { color: var(--text-muted) !important; }
+.text-\[var\(--accent-primary\)\] { color: var(--accent-primary) !important; }
+.text-\[var\(--accent-secondary\)\] { color: var(--accent-secondary) !important; }
+.text-\[var\(--success\)\] { color: var(--success) !important; }
+
+.rounded-\[var\(--radius-sm\)\] { border-radius: var(--radius-sm) !important; }
+.rounded-\[var\(--radius-md\)\] { border-radius: var(--radius-md) !important; }
+.rounded-\[var\(--radius-lg\)\] { border-radius: var(--radius-lg) !important; }
+
+.shadow-\[0_0_0_3px_var\(--accent-glow\)\] { box-shadow: 0 0 0 3px var(--accent-glow) !important; }
+.shadow-\[0_10px_40px_rgba\(0\,0\,0\,0\.4\)\] { box-shadow: 0 10px 40px rgba(0,0,0,0.4) !important; }
+.shadow-\[0_20px_40px_rgba\(0\,0\,0\,0\.3\)\] { box-shadow: 0 20px 40px rgba(0,0,0,0.3) !important; }
+.shadow-\[0_0_0_1px_var\(--accent-glow\)\] { box-shadow: 0 0 0 1px var(--accent-glow) !important; }
 
