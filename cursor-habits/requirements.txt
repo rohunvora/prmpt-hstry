@@ -1,0 +1,11 @@
+# cursor-habits has no external dependencies
+# Uses only Python standard library:
+# - sqlite3
+# - json
+# - argparse
+# - pathlib
+# - re
+# - platform
+# - collections
+# - datetime
+

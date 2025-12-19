@@ -13,8 +13,8 @@ export default function TermsPage() {
       <main className="max-w-3xl mx-auto px-6 py-24 pt-32">
         <h1 className="text-3xl font-display font-bold mb-8 text-text-primary">Terms of Service</h1>
         
-        <div className="prose max-w-none space-y-6 text-text-secondary text-base leading-relaxed">
-          <p className="text-base text-text-tertiary">Last updated: December 2024</p>
+        <div className="prose max-w-none space-y-6 text-text-secondary">
+          <p className="text-sm text-text-muted">Last updated: December 2024</p>
           
           <section>
             <h2 className="text-xl font-semibold text-text-primary mt-8 mb-4">1. The Tool</h2>

@@ -11,40 +11,40 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
           {/* Brand */}
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-md bg-accent-primary flex items-center justify-center">
-              <span className="text-white font-mono font-bold text-sm">ch</span>
+            <div className="w-6 h-6 rounded-md bg-accent-primary flex items-center justify-center">
+              <span className="text-white font-mono font-bold text-xs">ch</span>
             </div>
-            <span className="font-display font-medium text-text-secondary text-base">
+            <span className="font-display font-medium text-text-secondary">
               cursorhabits
             </span>
           </div>
 
-          {/* Links - min touch target with padding */}
-          <nav className="flex items-center gap-4 text-base text-text-secondary">
+          {/* Links */}
+          <div className="flex items-center gap-6 text-sm text-text-secondary">
             <a 
               href="https://github.com/rohunvora/prmpt-hstry/tree/main/cursor-habits"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-accent-primary transition-colors py-2 px-1"
+              className="hover:text-accent-primary transition-colors"
             >
               GitHub
             </a>
             <a 
               href="/privacy"
-              className="hover:text-accent-primary transition-colors py-2 px-1"
+              className="hover:text-accent-primary transition-colors"
             >
               Privacy
             </a>
             <a 
               href="/terms"
-              className="hover:text-accent-primary transition-colors py-2 px-1"
+              className="hover:text-accent-primary transition-colors"
             >
               Terms
             </a>
-          </nav>
+          </div>
 
           {/* Credit */}
-          <p className="text-base text-text-tertiary">
+          <p className="text-sm text-text-muted">
             Made with ☕ by{' '}
             <a 
               href="https://twitter.com/rohunvora"

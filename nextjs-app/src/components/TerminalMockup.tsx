@@ -51,7 +51,7 @@ export default function TerminalMockup({
           <div className="terminal-dot yellow" />
           <div className="terminal-dot green" />
         </div>
-        <span className="text-terminal-muted text-base font-mono ml-2">{title}</span>
+        <span className="text-terminal-muted text-sm font-mono ml-2">{title}</span>
       </div>
 
       {/* Terminal body */}
