@@ -1,0 +1,59 @@
+# Repository Hygiene
+
+## When This Applies
+- After creating, deleting, or moving files
+- When working sessions get long (10+ tool calls)
+- Before final commit of a feature
+
+## File Organization
+
+### Never commit to root unless it's:
+- README.md
+- LICENSE
+- .gitignore
+- Config files (package.json, pyproject.toml, etc.)
+
+### Temporary/generated files go in .gitignore:
+- Extracted data (*_messages.json, *_export.json)
+- Generated outputs (*_cursorrules.md, *_analysis.md)
+- Build artifacts (__pycache__, node_modules/, dist/, *.egg-info)
+- IDE configs (.cursor/, .idea/, .vscode/)
+
+### If you create a file, ask: "Does this belong in git?"
+- Scripts for personal use → don't commit, add to .gitignore
+- API keys or secrets → NEVER commit, add to .gitignore immediately
+- One-off analysis → don't commit unless explicitly requested
+
+## Cleanup Triggers
+
+### After deleting a feature/page:
+- Check for orphaned files (empty folders, unused components)
+- Remove related API routes, lib files, types
+- Update any imports that referenced deleted code
+
+### After a long session:
+- Run `git status` to see what's accumulated
+- Question any untracked files at root level
+- Suggest cleanup if clutter is building up
+
+## Folder Structure
+
+Keep related things together:
+```
+project/
+├── src/           ← All source code
+├── tests/         ← All tests
+├── docs/          ← Documentation (if needed)
+├── scripts/       ← Utility scripts (if needed)
+└── [config files] ← Root level only for configs
+```
+
+Don't create folders unless there are 3+ related files to put in them.
+
+## Before Pushing
+
+Ask yourself:
+1. Are there any files at root that shouldn't be?
+2. Did I add new file types that should be in .gitignore?
+3. Are there empty directories from deleted code?
+4. Would a new developer understand this structure?

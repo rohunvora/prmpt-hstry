@@ -17,10 +17,13 @@ build/
 
 # IDE
 .idea/
-.cursor/
 *.swp
 *.swo
 .DS_Store
+
+# Cursor (keep rules/, ignore the rest)
+.cursor/*
+!.cursor/rules/
 
 # Cursor chat exports (may contain secrets)
 *_messages.json
