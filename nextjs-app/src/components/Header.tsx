@@ -22,15 +22,15 @@ export default function Header() {
           </span>
         </a>
 
-        {/* GitHub Link - min 40px height for touch target */}
+        {/* GitHub Link */}
         <a 
           href="https://github.com/rohunvora/prmpt-hstry/tree/main/cursor-habits"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 px-4 py-2.5 min-h-[40px] rounded-lg border border-border-subtle bg-bg-card hover:border-accent-primary hover:text-accent-primary transition-all duration-150 text-text-secondary"
+          className="flex items-center gap-2 px-4 py-2.5 min-h-[44px] rounded-lg border border-border-subtle bg-bg-card hover:border-accent-primary hover:text-accent-primary transition-all duration-150 text-text-secondary"
         >
           <Github size={18} />
-          <span className="font-medium text-base hidden sm:inline">GitHub</span>
+          <span className="font-medium text-sm hidden sm:inline">GitHub</span>
         </a>
       </div>
     </header>

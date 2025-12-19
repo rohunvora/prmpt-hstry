@@ -48,7 +48,7 @@ export default function Home() {
             <div className="blob blob-gold w-64 h-64 bottom-20 right-1/4 opacity-25" />
           </div>
 
-          <div className="relative max-w-5xl mx-auto px-6 pt-20 pb-32">
+          <div className="relative max-w-5xl mx-auto px-6 pt-24 pb-40">
             {/* Badge */}
             <div className="flex justify-center mb-8 animate-fadeIn">
               <span className="badge">100% Local • Privacy First</span>
@@ -57,7 +57,7 @@ export default function Home() {
             {/* Headline */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold text-center text-text-primary mb-6 animate-fadeIn delay-1">
               Your chat history<br />
-              <span className="text-accent-primary">writes your rules</span>
+              <span className="text-text-primary">writes your rules</span>
             </h1>
 
             {/* Subhead */}
@@ -81,7 +81,7 @@ export default function Home() {
         {/* ============================================
             PROBLEM SECTION
             ============================================ */}
-        <section className="py-24 bg-bg-primary">
+        <section className="py-20 bg-bg-primary">
           <div className="max-w-4xl mx-auto px-6">
             <div className="text-center mb-16">
               <h2 className="text-3xl sm:text-4xl font-display font-bold text-text-primary mb-4">
@@ -90,13 +90,13 @@ export default function Home() {
             </div>
 
             <div className="bg-bg-card border border-border-subtle rounded-xl p-8 sm:p-12">
-              <div className="font-mono text-base space-y-4 text-text-secondary">
-                <p className="text-text-tertiary">You, to Cursor, for the 127th time:</p>
+              <div className="font-mono text-sm sm:text-base space-y-4 text-text-secondary">
+                <p className="text-text-muted">You, to Cursor, for the 127th time:</p>
                 <p className="text-accent-primary">"Push to GitHub after every change"</p>
                 <p className="text-accent-primary">"Don't test locally, deploy to Vercel"</p>
                 <p className="text-accent-primary">"Always check mobile"</p>
                 <p className="text-accent-primary">"Add that key to .env"</p>
-                <p className="text-text-tertiary mt-6">
+                <p className="text-text-muted mt-6">
                   These are your habits. You shouldn't have to repeat them.
                 </p>
               </div>
@@ -114,7 +114,7 @@ export default function Home() {
         {/* ============================================
             HOW IT WORKS
             ============================================ */}
-        <section className="py-24 bg-gradient-subtle">
+        <section className="py-28 bg-gradient-subtle">
           <div className="max-w-5xl mx-auto px-6">
             <div className="text-center mb-16">
               <h2 className="text-3xl sm:text-4xl font-display font-bold text-text-primary mb-4">
@@ -126,38 +126,38 @@ export default function Home() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
-              {/* Step 1 */}
-              <div className="card p-8 text-center">
+              {/* Step 1 - Coral accent */}
+              <div className="card p-6 text-center">
                 <div className="w-14 h-14 rounded-xl bg-accent-light flex items-center justify-center mx-auto mb-6">
                   <Terminal className="text-accent-primary" size={28} />
                 </div>
-                <div className="font-mono text-sm font-semibold text-accent-primary mb-2">01</div>
+                <div className="font-mono text-xs text-accent-primary mb-2">01</div>
                 <h3 className="font-display text-xl font-semibold text-text-primary mb-3">Run</h3>
-                <p className="text-text-secondary text-base">
+                <p className="text-text-secondary">
                   One command. Scans your local Cursor database for chat patterns.
                 </p>
               </div>
 
-              {/* Step 2 */}
-              <div className="card p-8 text-center">
-                <div className="w-14 h-14 rounded-xl bg-accent-light flex items-center justify-center mx-auto mb-6">
-                  <FileText className="text-accent-primary" size={28} />
+              {/* Step 2 - Sage accent */}
+              <div className="card p-6 text-center">
+                <div className="w-14 h-14 rounded-xl bg-accent-secondary/20 flex items-center justify-center mx-auto mb-6">
+                  <FileText className="text-accent-secondary" size={28} />
                 </div>
-                <div className="font-mono text-sm font-semibold text-accent-primary mb-2">02</div>
+                <div className="font-mono text-xs text-accent-primary mb-2">02</div>
                 <h3 className="font-display text-xl font-semibold text-text-primary mb-3">Review</h3>
-                <p className="text-text-secondary text-base">
+                <p className="text-text-secondary">
                   See what patterns were detected. Edit the generated rules if needed.
                 </p>
               </div>
 
-              {/* Step 3 */}
-              <div className="card p-8 text-center">
-                <div className="w-14 h-14 rounded-xl bg-accent-light flex items-center justify-center mx-auto mb-6">
-                  <Copy className="text-accent-primary" size={28} />
+              {/* Step 3 - Gold accent */}
+              <div className="card p-6 text-center">
+                <div className="w-14 h-14 rounded-xl bg-accent-tertiary/30 flex items-center justify-center mx-auto mb-6">
+                  <Copy className="text-amber-700" size={28} />
                 </div>
-                <div className="font-mono text-sm font-semibold text-accent-primary mb-2">03</div>
+                <div className="font-mono text-xs text-accent-primary mb-2">03</div>
                 <h3 className="font-display text-xl font-semibold text-text-primary mb-3">Paste</h3>
-                <p className="text-text-secondary text-base">
+                <p className="text-text-secondary">
                   Copy into your .cursorrules file. Cursor now knows your preferences.
                 </p>
               </div>
@@ -168,7 +168,7 @@ export default function Home() {
         {/* ============================================
             EXAMPLE OUTPUT
             ============================================ */}
-        <section className="py-24 bg-bg-primary">
+        <section className="py-20 bg-bg-primary">
           <div className="max-w-4xl mx-auto px-6">
             <div className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-display font-bold text-text-primary mb-4">
@@ -217,7 +217,7 @@ export default function Home() {
         {/* ============================================
             PRIVACY SECTION
             ============================================ */}
-        <section className="py-24 bg-gradient-subtle">
+        <section className="py-16 bg-gradient-subtle">
           <div className="max-w-4xl mx-auto px-6">
             <div className="card p-8 sm:p-12 flex flex-col sm:flex-row items-start gap-6">
               <div className="w-16 h-16 rounded-2xl bg-accent-secondary/20 flex items-center justify-center flex-shrink-0">
@@ -247,7 +247,7 @@ export default function Home() {
         {/* ============================================
             CTA SECTION
             ============================================ */}
-        <section className="py-24 bg-bg-primary">
+        <section className="py-28 bg-bg-primary">
           <div className="max-w-3xl mx-auto px-6 text-center">
             <h2 className="text-3xl sm:text-4xl font-display font-bold text-text-primary mb-6">
               Ready to stop repeating yourself?
@@ -277,7 +277,7 @@ export default function Home() {
               </a>
             </div>
 
-            <p className="text-base text-text-tertiary">
+            <p className="text-sm text-text-muted">
               Requires Python 3.8+ and Cursor installed
             </p>
           </div>
@@ -286,7 +286,7 @@ export default function Home() {
         {/* ============================================
             PROMPTS I LIKE
             ============================================ */}
-        <section className="py-24 bg-gradient-subtle">
+        <section className="py-32 bg-gradient-subtle">
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-12">
               <span className="badge mb-4">Bonus</span>
@@ -312,7 +312,7 @@ export default function Home() {
 
             {allPrompts.length > 6 && (
               <div className="text-center mt-12">
-                <p className="text-text-tertiary text-base">
+                <p className="text-text-muted text-sm">
                   {allPrompts.length - 6} more prompts available • 
                   <a href="#" className="text-accent-primary hover:underline ml-1">View all</a>
                 </p>

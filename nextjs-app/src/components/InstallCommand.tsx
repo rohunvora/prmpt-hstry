@@ -34,20 +34,19 @@ export default function InstallCommand({
 
   return (
     <div className={`install-command group ${className}`}>
-      <code className="flex items-center gap-3 text-base">
+      <code className="flex items-center gap-3 text-sm sm:text-base">
         <span className="prefix">{prefix}</span>
         <span className="command">{command}</span>
       </code>
-      {/* Copy button - 44x44px touch target */}
       <button 
         onClick={handleCopy}
-        className="w-11 h-11 flex items-center justify-center rounded-md bg-white/10 hover:bg-white/20 transition-colors flex-shrink-0"
+        className="p-3 min-w-[44px] min-h-[44px] rounded-md bg-white/10 hover:bg-white/20 transition-colors flex-shrink-0 flex items-center justify-center"
         aria-label={copied ? "Copied!" : "Copy to clipboard"}
       >
         {copied ? (
-          <Check size={20} className="text-terminal-green" />
+          <Check size={18} className="text-terminal-green" />
         ) : (
-          <Copy size={20} className="text-terminal-muted group-hover:text-terminal-text transition-colors" />
+          <Copy size={18} className="text-terminal-muted group-hover:text-terminal-text transition-colors" />
         )}
       </button>
     </div>

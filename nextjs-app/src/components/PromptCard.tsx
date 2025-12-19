@@ -31,16 +31,15 @@ export default function PromptCard({ prompt, onCopy, copied }: PromptCardProps) 
       {/* Header */}
       <div className="flex items-start justify-between gap-3 mb-4">
         <div className="flex-1 min-w-0">
-          <span className={`inline-block px-3 py-1 rounded-md text-xs font-mono font-semibold ${colorScheme.bg} ${colorScheme.text} mb-3`}>
+          <span className={`inline-block px-2.5 py-1 rounded-md text-xs font-mono font-medium ${colorScheme.bg} ${colorScheme.text} mb-3`}>
             {prompt.category}
           </span>
           <h3 className="font-display font-semibold text-lg text-text-primary leading-tight">
             {prompt.title}
           </h3>
         </div>
-        {/* Copy button - 44x44px touch target */}
         <button 
-          className="w-11 h-11 flex items-center justify-center rounded-lg border border-border-subtle bg-bg-primary opacity-0 group-hover:opacity-100 transition-opacity hover:border-accent-primary hover:text-accent-primary flex-shrink-0"
+          className="p-3 min-w-[44px] min-h-[44px] rounded-lg border border-border-subtle bg-bg-primary opacity-0 group-hover:opacity-100 transition-opacity hover:border-accent-primary hover:text-accent-primary flex items-center justify-center"
           onClick={(e) => {
             e.stopPropagation();
             onCopy();
@@ -48,32 +47,32 @@ export default function PromptCard({ prompt, onCopy, copied }: PromptCardProps) 
           aria-label={copied ? "Copied!" : "Copy prompt"}
         >
           {copied ? (
-            <Check size={18} className="text-accent-secondary" />
+            <Check size={16} className="text-accent-secondary" />
           ) : (
-            <Copy size={18} />
+            <Copy size={16} />
           )}
         </button>
       </div>
 
       {/* Description */}
-      <p className="text-base text-text-secondary mb-4 flex-grow">
+      <p className="text-text-secondary mb-4 flex-grow">
         {prompt.description}
       </p>
 
-      {/* Preview - code can stay smaller */}
+      {/* Preview */}
       <div className="bg-bg-code rounded-lg p-4 overflow-hidden">
-        <pre className="text-sm text-terminal-text font-mono whitespace-pre-wrap break-words line-clamp-4">
+        <pre className="text-xs text-terminal-text font-mono whitespace-pre-wrap break-words line-clamp-4">
           {prompt.prompt.slice(0, 200)}{prompt.prompt.length > 200 ? '...' : ''}
         </pre>
       </div>
 
       {/* Model tag */}
       <div className="mt-4 flex items-center justify-between">
-        <span className="text-sm text-text-tertiary font-mono">
+        <span className="text-xs text-text-muted font-mono">
           {prompt.modelTag}
         </span>
         {copied && (
-          <span className="text-sm text-accent-secondary font-medium">
+          <span className="text-xs text-accent-secondary font-medium">
             Copied!
           </span>
         )}
