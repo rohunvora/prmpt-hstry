@@ -6,7 +6,7 @@
   <p>
     <a href="https://prmpt-hstry.vercel.app"><strong>🌐 Website</strong></a> ·
     <a href="#quick-start"><strong>⚡ Quick Start</strong></a> ·
-    <a href="cursor-habits/"><strong>📁 CLI Tool</strong></a>
+    <a href="cursorhabits/"><strong>📁 CLI Tool</strong></a>
   </p>
 </div>
 
@@ -32,32 +32,50 @@ But you never formalize these into rules because:
 
 ## Quick Start
 
+### Option 1: pip install (recommended)
+
 ```bash
-# Clone
+pip install cursorhabits
+cursorhabits
+```
+
+### Option 2: Run from source
+
+```bash
 git clone https://github.com/rohunvora/prmpt-hstry.git
-cd prmpt-hstry/cursor-habits
-
-# Run
-python cursor_habits.py
+cd prmpt-hstry/cursorhabits
+pip install -e .
+cursorhabits
 ```
 
-That's it. No API keys, no accounts, no data uploaded anywhere.
+That's it. No API keys required, no accounts, no data uploaded anywhere.
 
-**Output:**
+---
+
+## Output
+
 ```
-🔍 Scanning Cursor chat history...
-   Found 847 messages across 23 conversations
+╭───────────────────────────────────────╮
+│  cursorhabits                         │
+│  Your chat history writes your rules  │
+╰───────────────────────────────────────╯
 
-✓ Detected 12 recurring patterns:
+✓ Found 1,847 messages
+✓ Kept 423 meaningful messages (filtered 1,424 noise)
+✓ Detected 8 patterns
 
-→ "push to GitHub" appeared 127 times
-→ "deploy to Vercel" appeared 89 times
-→ "check mobile" appeared 56 times
-→ "add to .env" appeared 34 times
+Detected Patterns
 
-📄 Generated: suggested_rules.md
+  [1] GitHub Workflow (127 mentions)
+      "Push to GitHub after every change"
+      
+  [2] Deployment (89 mentions)
+      "Deploy to Vercel, don't test locally"
+      
+  [3] Mobile-First (56 mentions)
+      "Always check how it looks on mobile"
 
-Done! Copy these into your .cursorrules file.
+✓ Rules saved to suggested_rules.md
 ```
 
 ---
@@ -67,25 +85,38 @@ Done! Copy these into your .cursorrules file.
 The tool generates a `suggested_rules.md` file with rules extracted from your actual habits:
 
 ```markdown
-# Deployment Workflow
+# Cursor Rules
 
-## When This Applies
-- Any time you make code changes that should go live
+## Deployment
+- Deploy to Vercel and test on production URL, not localhost
+- Push to GitHub after every meaningful change - don't wait to be asked
 
-## GitHub Flow
-- Push to GitHub after EVERY meaningful change
-- Don't wait to be asked
-- Commit from the rohunvora account
+## Quality
+- Always evaluate how changes look on mobile before considering done
+- Verify all calculations - trace at least one example end-to-end
+- Comment code for external developers - explain the "why"
 
-## Vercel Flow
-- Do NOT test locally
-- Push to Vercel and test on production URL
-- After deploying, share the live link immediately
+## Environment
+- When user provides API keys, add to .env immediately and confirm
 ```
 
 Copy these into:
 - **Cursor Settings → Rules for AI** (global)
 - **`.cursor/rules/`** in your project (per-project)
+
+Or run `cursorhabits apply` to do it automatically.
+
+---
+
+## Features
+
+| Feature | Description |
+|---------|-------------|
+| **Smart Filtering** | Removes file paths, error logs, task IDs, and conversational filler |
+| **Pattern Detection** | Finds repeated instructions across 12+ categories |
+| **AI Synthesis** | Optional OpenAI integration for polished rule generation |
+| **Direct Apply** | Write rules directly to Cursor settings |
+| **100% Local** | Your data never leaves your machine |
 
 ---
 
@@ -96,7 +127,7 @@ Copy these into:
 | Where does my data go? | **Nowhere.** 100% local processing. |
 | What data is accessed? | Only Cursor's local SQLite database. |
 | Is anything uploaded? | **No.** No network calls. No telemetry. |
-| Can I verify this? | Yes — it's ~200 lines of Python. [Read it](cursor-habits/cursor_habits.py). |
+| Can I verify this? | Yes — it's ~500 lines of Python. [Read it](cursorhabits/src/cursorhabits/). |
 
 ---
 
@@ -104,10 +135,12 @@ Copy these into:
 
 ```
 .
-├── cursor-habits/          ← The CLI tool (main attraction)
-│   ├── cursor_habits.py    ← Run this
-│   ├── suggested_rules.md  ← Example output
+├── cursorhabits/           ← The pip-installable CLI tool
+│   ├── src/cursorhabits/   ← Source code
+│   ├── pyproject.toml      ← Package config
 │   └── README.md           ← Detailed docs
+│
+├── cursor-habits/          ← Legacy standalone script
 │
 ├── nextjs-app/             ← Landing page website
 │   └── ...                 ← https://prmpt-hstry.vercel.app
@@ -120,7 +153,7 @@ Copy these into:
 ## Links
 
 - **Website:** [prmpt-hstry.vercel.app](https://prmpt-hstry.vercel.app)
-- **CLI Tool:** [cursor-habits/](cursor-habits/)
+- **CLI Tool:** [cursorhabits/](cursorhabits/)
 - **Twitter:** [@rohunvora](https://twitter.com/rohunvora)
 
 ---

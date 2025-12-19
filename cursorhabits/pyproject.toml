@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cursorhabits"
+version = "0.1.0"
+description = "Turn your Cursor chat history into personalized rules — automatically"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    { name = "Rohun Vora", email = "rohun@example.com" }
+]
+keywords = ["cursor", "ai", "rules", "productivity", "cli"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "rich>=13.0.0",
+    "click>=8.0.0",
+    "openai>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+]
+
+[project.scripts]
+cursorhabits = "cursorhabits.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/rohunvora/prmpt-hstry"
+Documentation = "https://github.com/rohunvora/prmpt-hstry#readme"
+Repository = "https://github.com/rohunvora/prmpt-hstry"
+Issues = "https://github.com/rohunvora/prmpt-hstry/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+ignore = ["E501"]
