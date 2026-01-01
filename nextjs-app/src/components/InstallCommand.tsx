@@ -1,7 +1,8 @@
 /**
  * InstallCommand - Copyable install/run command
- * 
- * Clean code box with copy button.
+ *
+ * NOIR TERMINAL AESTHETIC
+ * Glowing command box with phosphor accent
  */
 
 'use client';
@@ -15,10 +16,10 @@ interface InstallCommandProps {
   className?: string;
 }
 
-export default function InstallCommand({ 
-  command, 
+export default function InstallCommand({
+  command,
   prefix = "$",
-  className = "" 
+  className = ""
 }: InstallCommandProps) {
   const [copied, setCopied] = useState(false);
 
@@ -38,18 +39,17 @@ export default function InstallCommand({
         <span className="prefix">{prefix}</span>
         <span className="command">{command}</span>
       </code>
-      <button 
+      <button
         onClick={handleCopy}
-        className="p-3 min-w-[44px] min-h-[44px] rounded-md bg-white/10 hover:bg-white/20 transition-colors flex-shrink-0 flex items-center justify-center"
+        className="p-3 min-w-[44px] min-h-[44px] rounded-md bg-white/5 hover:bg-phosphor/20 border border-transparent hover:border-phosphor/30 transition-all flex-shrink-0 flex items-center justify-center"
         aria-label={copied ? "Copied!" : "Copy to clipboard"}
       >
         {copied ? (
-          <Check size={18} className="text-terminal-green" />
+          <Check size={18} className="text-phosphor" />
         ) : (
-          <Copy size={18} className="text-terminal-muted group-hover:text-terminal-text transition-colors" />
+          <Copy size={18} className="text-text-muted group-hover:text-phosphor transition-colors" />
         )}
       </button>
     </div>
   );
 }
-

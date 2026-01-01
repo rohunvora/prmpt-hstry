@@ -1,7 +1,8 @@
 /**
  * Root Layout - cursorhabits
- * 
- * Warm aesthetic with personality fonts.
+ *
+ * NOIR TERMINAL AESTHETIC
+ * Bold display fonts meet precision monospace.
  */
 
 import type { Metadata } from "next";
@@ -21,20 +22,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Google Fonts - Fraunces (display) + General Sans (body) + JetBrains Mono (code) */}
+        {/* Fontshare - Clash Display (bold display) + Satoshi (body) */}
+        <link
+          href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=satoshi@400,500,600,700&display=swap"
+          rel="stylesheet"
+        />
+        {/* Google Fonts - JetBrains Mono (code) */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link 
-          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;600&display=swap" 
-          rel="stylesheet" 
-        />
-        {/* General Sans from Fontshare */}
-        <link 
-          href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" 
+        <link
+          href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="bg-bg-primary text-text-primary">
+      <body className="bg-noir-black text-text-primary">
         {children}
       </body>
     </html>

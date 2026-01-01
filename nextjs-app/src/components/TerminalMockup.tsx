@@ -1,8 +1,8 @@
 /**
  * TerminalMockup - Styled terminal window showing CLI output
- * 
- * Warm styling that doesn't feel cold/harsh like typical terminals.
- * Shows the cursorhabits output with detected patterns.
+ *
+ * NOIR TERMINAL AESTHETIC
+ * CRT-inspired with phosphor green accents and scanline effects
  */
 
 'use client';
@@ -22,25 +22,25 @@ interface TerminalMockupProps {
 const defaultLines: TerminalLine[] = [
   { type: 'command', content: '$ python cursor_habits.py' },
   { type: 'muted', content: '' },
-  { type: 'header', content: '🔍 Scanning Cursor chat history...' },
+  { type: 'header', content: 'Scanning Cursor chat history...' },
   { type: 'muted', content: 'Found 847 messages across 23 conversations' },
   { type: 'muted', content: '' },
-  { type: 'success', content: '✓ Detected 12 recurring patterns:' },
+  { type: 'success', content: 'Detected 12 recurring patterns:' },
   { type: 'muted', content: '' },
-  { type: 'pattern', content: '→ "push to GitHub" appeared 127 times' },
-  { type: 'pattern', content: '→ "deploy to Vercel" appeared 89 times' },
-  { type: 'pattern', content: '→ "check mobile" appeared 56 times' },
-  { type: 'pattern', content: '→ "add to .env" appeared 34 times' },
+  { type: 'pattern', content: '  "push to GitHub" .............. 127x' },
+  { type: 'pattern', content: '  "deploy to Vercel" ............ 89x' },
+  { type: 'pattern', content: '  "check mobile" ................ 56x' },
+  { type: 'pattern', content: '  "add to .env" ................. 34x' },
   { type: 'muted', content: '' },
-  { type: 'output', content: '📄 Generated: suggested_rules.md' },
+  { type: 'output', content: 'Generated: suggested_rules.md' },
   { type: 'muted', content: '' },
   { type: 'success', content: 'Done! Copy these into your .cursorrules file.' },
 ];
 
-export default function TerminalMockup({ 
-  lines = defaultLines, 
+export default function TerminalMockup({
+  lines = defaultLines,
   title = "cursorhabits",
-  className = "" 
+  className = ""
 }: TerminalMockupProps) {
   return (
     <div className={`terminal overflow-hidden ${className}`}>
@@ -51,22 +51,21 @@ export default function TerminalMockup({
           <div className="terminal-dot yellow" />
           <div className="terminal-dot green" />
         </div>
-        <span className="text-terminal-muted text-sm font-mono ml-2">{title}</span>
+        <span className="text-text-muted text-sm font-mono ml-2">{title}</span>
       </div>
 
       {/* Terminal body */}
       <div className="terminal-body">
         {lines.map((line, i) => (
-          <div 
-            key={i} 
+          <div
+            key={i}
             className={`
-              ${line.indent ? `ml-${line.indent * 4}` : ''}
-              ${line.type === 'command' ? 'text-terminal-green' : ''}
-              ${line.type === 'success' ? 'text-terminal-green font-medium' : ''}
-              ${line.type === 'output' ? 'text-terminal-yellow' : ''}
-              ${line.type === 'muted' ? 'text-terminal-muted' : ''}
-              ${line.type === 'header' ? 'text-terminal-coral font-medium' : ''}
-              ${line.type === 'pattern' ? 'text-terminal-text' : ''}
+              ${line.type === 'command' ? 'text-phosphor font-medium' : ''}
+              ${line.type === 'success' ? 'text-phosphor' : ''}
+              ${line.type === 'output' ? 'text-amber' : ''}
+              ${line.type === 'muted' ? 'text-text-dim' : ''}
+              ${line.type === 'header' ? 'text-electric-blue font-medium' : ''}
+              ${line.type === 'pattern' ? 'text-text-secondary' : ''}
               ${!line.content ? 'h-4' : ''}
             `}
             style={{ paddingLeft: line.indent ? `${line.indent * 16}px` : undefined }}
@@ -74,14 +73,13 @@ export default function TerminalMockup({
             {line.content}
           </div>
         ))}
-        
+
         {/* Blinking cursor */}
-        <div className="mt-2 flex items-center gap-1">
-          <span className="text-terminal-green">$</span>
-          <span className="w-2 h-4 bg-terminal-green animate-pulse" />
+        <div className="mt-3 flex items-center gap-1">
+          <span className="text-phosphor">$</span>
+          <span className="w-2 h-5 bg-phosphor animate-pulse" />
         </div>
       </div>
     </div>
   );
 }
-
